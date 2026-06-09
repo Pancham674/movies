@@ -20,7 +20,7 @@ export default function Favorites() {
     return (
         <div className="favorites-empty">
             <h2>No favorites yet.</h2>
-            <p>du Bastard hurensohn</p>
+            <p>Go to Home to add movies to your favorites!</p>
         </div>
     );
 }

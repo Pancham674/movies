@@ -4,10 +4,10 @@ export default function NavBar() {
     return (
         <header>
             <nav className="navbar">
-                <div className="nabvar-brand">
-                    <Link to="/">Moobies</Link>
+                <div className="navbar-brand">
+                    <Link to="/">Movies</Link>
                 </div>
-                <div className="nabvar-links">
+                <div className="navbar-links">
                     <Link to="/" className="navbar-link">Home </Link>
                     <Link to="/favorites" className="navbar-link">Favorites</Link>
                 </div>
