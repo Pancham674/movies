@@ -7,7 +7,11 @@ interface MovieContextType {
     removeFromFavs: (movId: number) => void,
     isFavorite: (movId: number) => boolean,
     movies: MovieInfo[],
-    setMovies: React.Dispatch<SetStateAction<MovieInfo[]>>
+    setMovies: React.Dispatch<SetStateAction<MovieInfo[]>>,
+    isLoading: boolean,
+    setIsLoading: React.Dispatch<SetStateAction<boolean>>, 
+    error: string,
+    setError: React.Dispatch<SetStateAction<string>>
 }
 
 const MovieContext = createContext<MovieContextType>(null!);
@@ -17,8 +21,10 @@ export const useMovieContext = () => useContext(MovieContext);
 export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
     const [movies, setMovies] = useState<MovieInfo[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [isInit, setIsInit] = useState(true);
-    
+    const [error, setError] = useState("");
+
     //retrieve the favMovies from localStorage on the first load
     useEffect(() => {
         const storedFavs = localStorage.getItem("favMovies");
@@ -50,12 +56,10 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     }
 
     const values: MovieContextType = {
-        favMovies,
-        addToFavs,
-        removeFromFavs,
-        isFavorite, 
-        movies, 
-        setMovies
+        favMovies, addToFavs, removeFromFavs, isFavorite, 
+        movies, setMovies,
+        isLoading, setIsLoading,
+        error, setError
     }
 
     return (

@@ -5,12 +5,9 @@ import { useState, useEffect } from "react";
 import Search from "../components/Search";
 
 export default function Home() {
-    const [searchTerm, setSearchTerm] = useState<string>("");
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string>("");
+    const { movies, setMovies, isLoading, setIsLoading, error, setError } = useMovieContext();
+    const [searchTerm, setSearchTerm] = useState("");
     
-    const { movies, setMovies } = useMovieContext();
-
     useEffect(() => {
             const loadPopularMovies = async () => {
                 try {
