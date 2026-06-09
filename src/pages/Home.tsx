@@ -55,8 +55,7 @@ export default function Home() {
         { 
             isLoading ? <h3 className="loading">Hang on, we're still loading!</h3> :
             <div className="movies-grid">{
-                movies.map(mov => mov.title.includes(searchTerm)
-                    && <MovieCard key={mov.id} currentMovie={mov} />)}
+                movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
             </div>
         } 
       </div>
