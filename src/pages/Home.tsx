@@ -1,15 +1,16 @@
 import { getPopularMovies, getSearchedMovies } from "../services/api";
+import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
-import Search from "../components/Search";
 import { useState, useEffect } from "react";
-import type MovieInfo from "../MovieInfo";
+import Search from "../components/Search";
 
 export default function Home() {
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [movies, setMovies] = useState<MovieInfo[]>([]);
-    const [error, setError] = useState<string>("");
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string>("");
     
+    const { movies, setMovies } = useMovieContext();
+
     useEffect(() => {
             const loadPopularMovies = async () => {
                 try {

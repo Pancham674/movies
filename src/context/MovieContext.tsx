@@ -1,11 +1,13 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect, type SetStateAction } from "react";
 import type MovieInfo from "../MovieInfo";
 
 interface MovieContextType {
     favMovies: MovieInfo[],
     addToFavs: (movie: MovieInfo) => void,
     removeFromFavs: (movId: number) => void,
-    isFavorite: (movId: number) => boolean
+    isFavorite: (movId: number) => boolean,
+    movies: MovieInfo[],
+    setMovies: React.Dispatch<SetStateAction<MovieInfo[]>>
 }
 
 const MovieContext = createContext<MovieContextType>(null!);
@@ -14,6 +16,7 @@ export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
+    const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [isInit, setIsInit] = useState(true);
     
     //retrieve the favMovies from localStorage on the first load
@@ -50,7 +53,9 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
         favMovies,
         addToFavs,
         removeFromFavs,
-        isFavorite
+        isFavorite, 
+        movies, 
+        setMovies
     }
 
     return (

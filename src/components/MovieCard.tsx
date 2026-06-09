@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type MovieInfo from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";  
 
@@ -11,7 +12,7 @@ export default function MovieCard({currentMovie}: {currentMovie: MovieInfo}) {
   }
   
   return ( 
-  <div className="movie-card">
+  <Link to={`/details/${currentMovie.id}`} className="movie-card">
     <div className="movie-poster">
       <img src={currentMovie.poster_path !== null ? `https://image.tmdb.org/t/p/w500${currentMovie.poster_path}` : 
                      "https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg"} 
@@ -24,5 +25,5 @@ export default function MovieCard({currentMovie}: {currentMovie: MovieInfo}) {
       <h3>{currentMovie.title}</h3>
       <p>{currentMovie.release_date.split("-")[0]}</p>
     </div>
-  </div>);
+  </Link>);
 }
