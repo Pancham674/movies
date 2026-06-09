@@ -14,6 +14,7 @@ export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
+    const [isInit, setIsInit] = useState(true);
     
     //retrieve the favMovies from localStorage on the first load
     useEffect(() => {
@@ -22,11 +23,15 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
             const favs: MovieInfo[] = JSON.parse(storedFavs);
             setFavMovies(favs);
         }
+        setIsInit(false);
     }, []);
 
     //everytime a value within favMovies change we update the localStorage
-    useEffect(() =>{
-        localStorage.setItem("favMovies", JSON.stringify(favMovies))
+    useEffect(() => {
+        if (!isInit)    //prevent setting it to [] on first init
+        {
+            localStorage.setItem("favMovies", JSON.stringify(favMovies))
+        }
     }, [favMovies]);
 
     const addToFavs = (movie: MovieInfo) => {
