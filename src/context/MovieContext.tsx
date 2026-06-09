@@ -6,8 +6,6 @@ interface MovieContextType {
     addToFavs: (movie: MovieInfo) => void,
     removeFromFavs: (movId: number) => void,
     isFavorite: (movId: number) => boolean,
-    movies: MovieInfo[],
-    setMovies: React.Dispatch<SetStateAction<MovieInfo[]>>,
     isLoading: boolean,
     setIsLoading: React.Dispatch<SetStateAction<boolean>>, 
     error: string,
@@ -20,7 +18,6 @@ export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
-    const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isInit, setIsInit] = useState(true);
     const [error, setError] = useState("");
@@ -57,7 +54,6 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
 
     const values: MovieContextType = {
         favMovies, addToFavs, removeFromFavs, isFavorite, 
-        movies, setMovies,
         isLoading, setIsLoading,
         error, setError
     }

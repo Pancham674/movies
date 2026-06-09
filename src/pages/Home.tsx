@@ -2,10 +2,12 @@ import { getPopularMovies, getSearchedMovies } from "../services/api";
 import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
 import { useState, useEffect } from "react";
+import type MovieInfo from "../MovieInfo";
 import Search from "../components/Search";
 
 export default function Home() {
-    const { movies, setMovies, isLoading, setIsLoading, error, setError } = useMovieContext();
+    const { isLoading, setIsLoading, error, setError } = useMovieContext();
+    const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     
     useEffect(() => {
