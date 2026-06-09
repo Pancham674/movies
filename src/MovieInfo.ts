@@ -2,6 +2,7 @@ export default interface MovieInfo {
   id: number, 
   title: string, 
   revenue: number,
+  runtime: string,
   tagline: string,
   overview: string,
   genres: Genres[],

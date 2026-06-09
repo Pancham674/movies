@@ -44,6 +44,7 @@ export default function Details() {
                         </ul>
                     </fieldset>
                     <p>Release Date: {movie!.release_date.toLocaleLowerCase()}</p>
+                    <p>Runtime: {`${Math.round(Number(movie!.runtime) / 60)}H ${Number(movie!.runtime) % 60}`}M</p>
                     { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
                     <ul>Production Countries:
                         { movie!.production_countries.map(
