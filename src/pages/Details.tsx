@@ -43,14 +43,25 @@ export default function Details() {
                                 gen => <li key={gen.id}>{gen.name}</li>) }
                         </ul>
                     </fieldset>
+                   
                     <p>Release Date: {movie!.release_date.toLocaleLowerCase()}</p>
-                    <p>Runtime: {`${Math.round(Number(movie!.runtime) / 60)}H ${Number(movie!.runtime) % 60}`}M</p>
+                    <p>Status: {movie!.status}</p>
+                    <p>Runtime: {`${Math.floor(Number(movie!.runtime) / 60)}H ${Number(movie!.runtime) % 60}`}M</p>
+                   
                     { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
+                   
                     <ul>Production Countries:
                         { movie!.production_countries.map(
                             (country, i) => <li key={i}>{country.iso_3166_1}: {country.name}</li>) }
                     </ul>
-                    <p>Revenue: {movie!.revenue.toLocaleString("en-US")}$</p>
+                    <ul>Available Languages:
+                        { movie!.spoken_languages.map(
+                            (lang, i) => <li key={i}>{lang.english_name}</li>) }
+                    </ul>
+                    { movie!.budget && <p>Budget: {movie!.budget.toLocaleString("en-US")}$</p>}
+                    { movie!.revenue && <p>Revenue: {movie!.revenue.toLocaleString("en-US")}$</p>}
+                    { (movie!.budget && movie!.revenue ) && 
+                        <p>Profit: {(movie!.revenue - movie!.budget).toLocaleString("en-US")}$</p> }
                 </fieldset> 
 
                 <fieldset>
