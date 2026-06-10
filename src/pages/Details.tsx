@@ -1,7 +1,7 @@
 import { getMovieDetails } from "../services/api";
 import { useParams } from "react-router-dom";
-import type MovieInfo from "../MovieInfo";
 import { useState, useEffect } from "react";
+import type MovieInfo from "../MovieInfo";
 
 export default function Details() {
     const [isLoading, setIsLoading] = useState(true);
@@ -15,9 +15,9 @@ export default function Details() {
             try {
                 const mov: MovieInfo = await getMovieDetails(movId);
                 setMovie(mov);
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error);
-                setError("An Error occurred trying to fetch details of the movie");
+                setError(error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -44,7 +44,7 @@ export default function Details() {
                         </ul>
                     </fieldset>
                    
-                    <p>Release Date: {movie!.release_date.toLocaleLowerCase()}</p>
+                    <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
                     <p>Status: {movie!.status}</p>
                     <p>Runtime: {`${Math.floor(Number(movie!.runtime) / 60)}H ${Number(movie!.runtime) % 60}`}M</p>
                    
@@ -58,10 +58,10 @@ export default function Details() {
                         { movie!.spoken_languages.map(
                             (lang, i) => <li key={i}>{lang.english_name}</li>) }
                     </ul>
-                    { movie!.budget && <p>Budget: {movie!.budget.toLocaleString("en-US")}$</p>}
-                    { movie!.revenue && <p>Revenue: {movie!.revenue.toLocaleString("en-US")}$</p>}
-                    { (movie!.budget && movie!.revenue ) && 
-                        <p>Profit: {(movie!.revenue - movie!.budget).toLocaleString("en-US")}$</p> }
+
+                    { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
+                    { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
+                    { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
                 </fieldset> 
 
                 <fieldset>
@@ -71,4 +71,10 @@ export default function Details() {
             </div>
         }
     </>)
+}
+
+function getReleaseDate(stringDate: string): string {
+    const dateArray = stringDate.split("-");
+    const correctOrder = `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`;
+    return correctOrder;
 }

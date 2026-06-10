@@ -16,9 +16,9 @@ export default function Home() {
                 try {
                     const popularMovies = await getPopularMovies();
                     setMovies(popularMovies);
-                } catch (er) {
-                    console.log(er);
-                    setError("RAHHHH!!! WE FAILED GETTING THE POPULAR MOVIES, MASTER");
+                } catch (error: any) {
+                    console.log(error);
+                    setError(error.message);
                 } finally {
                     setIsLoading(false);
                 }
@@ -37,9 +37,9 @@ export default function Home() {
             
             setError("");
             setSearchTerm("");
-        } catch(er) {
-            console.log(er);
-            setError("RAHHHH!!! WE FAILED GETTING THE MOVIES YOU SEARCHED FOR, MASTER");
+        } catch(error: any) {
+            console.log(error);
+            setError(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -48,17 +48,20 @@ export default function Home() {
     return (<>
       <div className="Home">      
         <Search searchMoviesFunc={searchMovies}
-              currentSearchTerm={searchTerm}
-              setSearchTermFunc={setSearchTerm}/>
+            currentSearchTerm={searchTerm}
+            setSearchTermFunc={setSearchTerm}
+        />
         
         { 
         error ? 
             <div className="error-message">{error}</div> :
             isLoading ?
                 <h3 className="loading">Hang on, we're still loading!</h3> :
-                <div className="movies-grid">{
-                    movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
-                </div>
+                movies.length == 0 ?
+                    <p className="no-movies">No movies could be found</p> :
+                    <div className="movies-grid">{
+                        movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
+                    </div>
         } 
       </div>
     </>
