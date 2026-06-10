@@ -6,9 +6,10 @@ import type MovieInfo from "../MovieInfo";
 import Search from "../components/Search";
 
 export default function Home() {
-    const { isLoading, setIsLoading, error, setError } = useMovieContext();
+    const { isLoading, setIsLoading } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [error, setError] = useState("");;
     
     useEffect(() => {
             const loadPopularMovies = async () => {
@@ -50,13 +51,14 @@ export default function Home() {
               currentSearchTerm={searchTerm}
               setSearchTermFunc={setSearchTerm}/>
         
-        { error && <div className="error-message">{error}</div> }
-
         { 
-            isLoading ? <h3 className="loading">Hang on, we're still loading!</h3> :
-            <div className="movies-grid">{
-                movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
-            </div>
+        error ? 
+            <div className="error-message">{error}</div> :
+            isLoading ?
+                <h3 className="loading">Hang on, we're still loading!</h3> :
+                <div className="movies-grid">{
+                    movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
+                </div>
         } 
       </div>
     </>

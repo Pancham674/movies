@@ -1,4 +1,3 @@
-import { useMovieContext } from "../context/MovieContext";
 import { getMovieDetails } from "../services/api";
 import { useParams } from "react-router-dom";
 import type MovieInfo from "../MovieInfo";
@@ -7,7 +6,7 @@ import { useState, useEffect } from "react";
 export default function Details() {
     const [isLoading, setIsLoading] = useState(true);
     const [movie, setMovie] = useState<MovieInfo>();
-    const { error, setError } = useMovieContext();
+    const [error, setError] = useState("");;
     const movId = Number(useParams().id);
 
     //Refetch the info everytime movId changes (basically everytime Details gets viewed)
@@ -27,8 +26,9 @@ export default function Details() {
     }, [movId])
 
     return (<>
-        { error && <div className="error-message">{error}</div> }
         {
+        error ?
+        <div className="error-message">{error}</div> :
             isLoading ? 
             <p>Loading!!</p> :
             <div>
