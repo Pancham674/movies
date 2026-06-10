@@ -11,8 +11,10 @@ export default interface MovieInfo {
   homepage: string,
   poster_path: string, 
   release_date: string,
+  backdrop_path: string,
   spoken_languages: SpokenLanguages[],
   production_countries: ProductionCountries[],
+  production_companies: ProductionCompanies[],
 }
 
  interface ProductionCountries {
@@ -21,12 +23,19 @@ export default interface MovieInfo {
 }
 
 interface Genres {
-  id: number,
   name: string
+  id: number,
 }
 
 interface SpokenLanguages {
   english_name: string,
   iso_639_1: string,
   name: string,
+}
+
+interface ProductionCompanies {
+  origin_country: string,
+  logo_path: string,
+  name: string,
+  id: number,
 }

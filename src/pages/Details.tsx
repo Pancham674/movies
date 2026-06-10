@@ -7,6 +7,8 @@ export default function Details() {
     const [isLoading, setIsLoading] = useState(true);
     const [movie, setMovie] = useState<MovieInfo>();
     const [error, setError] = useState("");;
+    
+    const imgPath = "https://image.tmdb.org/t/p/original/";
     const movId = Number(useParams().id);
 
     //Refetch the info everytime movId changes (basically everytime Details gets viewed)
@@ -33,15 +35,13 @@ export default function Details() {
             <p>Loading!!</p> :
             <div>
                 <h2 className="movie-title">{movie!.title}</h2>
-                { movie!.tagline && <h3 className="movie-subtitle">{movie!.tagline}</h3> }
+                { movie!.tagline && <h3 className="movie-subtitle"><i>"{movie!.tagline}"</i></h3> }
                 <fieldset>
                     <legend>General Information</legend>
                     <fieldset>
                         <legend>Genres</legend>
-                        <ul>
                             { movie!.genres.map(
-                                gen => <li key={gen.id}>{gen.name}</li>) }
-                        </ul>
+                                gen => <p className="tag" key={gen.id}>{gen.name}</p>) }
                     </fieldset>
                    
                     <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
@@ -50,15 +50,26 @@ export default function Details() {
                    
                     { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
                    
-                    <ul>Production Countries:
-                        { movie!.production_countries.map(
-                            (country, i) => <li key={i}>{country.iso_3166_1}: {country.name}</li>) }
-                    </ul>
-                    <ul>Available Languages:
-                        { movie!.spoken_languages.map(
-                            (lang, i) => <li key={i}>{lang.english_name}</li>) }
-                    </ul>
+                    <fieldset>
+                        <legend>Production Companies:</legend>
+                        { movie!.production_companies.map(
+                            comp => comp.logo_path ? 
+                                <img key={comp.id} src={imgPath + comp.logo_path} alt={comp.name}></img> :
+                                <p key={comp.id}>{comp.name}</p>) 
+                        }
+                    </fieldset>
 
+                    <fieldset>
+                        <legend>Production Countries:</legend>
+                        { movie!.production_countries.map(
+                            (coun, i) => <p className="tag" key={i}>{coun.name}</p>) }
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Available Languages:</legend>
+                            { movie!.spoken_languages.map(
+                                (lang, i) => <p className="tag" key={i}>{lang.english_name}</p>) }
+                    </fieldset>
                     { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
                     { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
                     { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
@@ -68,6 +79,8 @@ export default function Details() {
                     <legend>Description</legend>
                     <p>{movie!.overview}</p>
                 </fieldset>
+
+                <img className="background-img" src={imgPath + movie!.backdrop_path}></img>
             </div>
         }
     </>)

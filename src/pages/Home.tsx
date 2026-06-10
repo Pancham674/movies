@@ -9,7 +9,7 @@ export default function Home() {
     const { isLoading, setIsLoading } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [error, setError] = useState("");;
+    const [error, setError] = useState("");
     
     useEffect(() => {
             const loadPopularMovies = async () => {
@@ -58,7 +58,7 @@ export default function Home() {
             isLoading ?
                 <h3 className="loading">Hang on, we're still loading!</h3> :
                 movies.length == 0 ?
-                    <p className="no-movies">No movies could be found</p> :
+                    <p className="no-movies">No movies could be found.</p> :
                     <div className="movies-grid">{
                         movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
                     </div>
