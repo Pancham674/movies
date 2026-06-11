@@ -4,7 +4,7 @@ export default interface MovieInfo {
   status: string,
   budget: number,
   revenue: number,
-  runtime: string,
+  runtime: number,
   tagline: string,
   overview: string,
   genres: Genres[],

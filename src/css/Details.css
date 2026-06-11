@@ -1,0 +1,20 @@
+.details {
+    display: flex;
+    flex-direction: row;
+}
+
+.background-img {
+    position: absolute;
+    z-index: -1;
+    filter: blur(5px) grayscale(50%);
+    display: inline-block;
+}
+
+.movie-poster {
+    width: 50%;
+    height: auto;
+}
+
+.main-content {
+    padding: 0;
+}

@@ -2,12 +2,14 @@ import { getMovieDetails } from "../services/api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type MovieInfo from "../MovieInfo";
+import "../css/Details.css";
 
 export default function Details() {
     const [isLoading, setIsLoading] = useState(true);
     const [movie, setMovie] = useState<MovieInfo>();
-    const [error, setError] = useState("");;
+    const [error, setError] = useState("");
     
+    const noImageFound = "https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
     const imgPath = "https://image.tmdb.org/t/p/original/";
     const movId = Number(useParams().id);
 
@@ -26,28 +28,32 @@ export default function Details() {
         }
         loadMovieDetails();
     }, [movId])
-
+    
     return (<>
         {
-        error ?
-        <div className="error-message">{error}</div> :
+            error ?
+            <div className="error-message">{error}</div> :
             isLoading ? 
             <p>Loading!!</p> :
-            <div>
-                <h2 className="movie-title">{movie!.title}</h2>
-                { movie!.tagline && <h3 className="movie-subtitle"><i>"{movie!.tagline}"</i></h3> }
+            <div className="details">
+                <img className="background-img" src={imgPath + movie!.backdrop_path}></img>
+                <img className="movie-poster" src={movie!.poster_path ? 
+                        imgPath + movie!.poster_path : noImageFound }>
+                </img>
                 <fieldset>
-                    <legend>General Information</legend>
+                    <legend className="movie-title"><b>{movie!.title}</b></legend>
+                    { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
+                
+                    <p>General Information</p>
                     <fieldset>
                         <legend>Genres</legend>
                             { movie!.genres.map(
                                 gen => <p className="tag" key={gen.id}>{gen.name}</p>) }
                     </fieldset>
                    
-                    <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
                     <p>Status: {movie!.status}</p>
-                    <p>Runtime: {`${Math.floor(Number(movie!.runtime) / 60)}H ${Number(movie!.runtime) % 60}`}M</p>
-                   
+                    <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
+                    { movie!.runtime !== 0 && <p>Runtime: {`${Math.floor(movie!.runtime / 60)}H ${Number(movie!.runtime) % 60}`}M</p>}
                     { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
                    
                     <fieldset>
@@ -70,17 +76,17 @@ export default function Details() {
                             { movie!.spoken_languages.map(
                                 (lang, i) => <p className="tag" key={i}>{lang.english_name}</p>) }
                     </fieldset>
+
                     { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
                     { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
                     { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
-                </fieldset> 
-
+                </fieldset>
+                
                 <fieldset>
                     <legend>Description</legend>
                     <p>{movie!.overview}</p>
                 </fieldset>
 
-                <img className="background-img" src={imgPath + movie!.backdrop_path}></img>
             </div>
         }
     </>)
