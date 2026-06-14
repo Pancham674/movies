@@ -1,6 +1,17 @@
 .details {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 1rem;
+    justify-content: space-between;
+}
+.poster, .general-info, .desc {
+    border-radius: 30px;
+
+}
+
+.desc {
+    margin: 1rem;
+    padding: 1rem;
 }
 
 .background-img {
@@ -10,10 +21,13 @@
     display: inline-block;
 }
 
-.movie-poster {
-    width: 50%;
-    height: auto;
+.general-info, .desc {
+    background-color: #1a1a1a;
 }
+
+legend {
+    font-size: 1.5rem;
+} 
 
 .main-content {
     padding: 0;
