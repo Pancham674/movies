@@ -6,7 +6,12 @@
 }
 .poster, .general-info, .desc {
     border-radius: 30px;
+}
 
+.poster, .general-info {
+    min-height: 30%;
+    max-height: 100%;
+    /* height: auto; */
 }
 
 .desc {
@@ -14,12 +19,9 @@
     padding: 1rem;
 }
 
-.background-img {
-    position: absolute;
-    z-index: -1;
-    filter: blur(5px) grayscale(50%);
-    display: inline-block;
-}
+/* div:has(> .details > .desc) {
+    filter: blur(5px) grayscale(50%); 
+}*/
 
 .general-info, .desc {
     background-color: #1a1a1a;

@@ -7,6 +7,7 @@ import "../css/Details.css";
 export default function Details() {
     const [isLoading, setIsLoading] = useState(true);
     const [movie, setMovie] = useState<MovieInfo>();
+    const [divBg, setDivBg] = useState<React.CSSProperties>({});
     const [error, setError] = useState("");
     const movId = Number(useParams().id);
 
@@ -22,6 +23,15 @@ export default function Details() {
             try {
                 const mov: MovieInfo = await getMovieDetails(movId);
                 setMovie(mov);
+
+                const bgImgDiv : React.CSSProperties = {  
+                    backgroundImage: mov.backdrop_path ? `url(${imgPath + og + mov!.backdrop_path})` : "",
+                    backgroundColor: "#00000",
+                    backgroundPosition: "center",
+                    backgroundSize: "contain",
+                };
+
+                setDivBg(bgImgDiv);
             } catch (error: any) {
                 console.log(error);
                 setError(error.message);
@@ -38,7 +48,7 @@ export default function Details() {
             <div className="error-message">{error}</div> :
             isLoading ? 
             <p>Loading!!</p> :
-            <>
+            <div style={divBg}>
                 <div className="details">
                     <img className="poster" src={movie!.poster_path ? 
                             imgPath + w500 + movie!.poster_path : noImageFound }>
@@ -88,8 +98,8 @@ export default function Details() {
                     <legend>Description</legend>
                     <p>{movie!.overview}</p>
                 </fieldset>
-                <img className="background-img" src={imgPath + og + movie!.backdrop_path}></img>
-            </>   
+                {/* <img className="background-img" src={imgPath + og + movie!.backdrop_path}></img> */}
+            </div>   
         }
     </>)
 }
