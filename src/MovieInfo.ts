@@ -1,4 +1,4 @@
-export default interface MovieInfo {
+export interface MovieInfo {
   id: number, 
   title: string, 
   status: string,
@@ -27,7 +27,7 @@ interface Genres {
   id: number,
 }
 
-interface SpokenLanguages {
+export interface SpokenLanguages {
   english_name: string,
   iso_639_1: string,
   name: string,

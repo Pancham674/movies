@@ -1,7 +1,7 @@
 import { getMovieDetails } from "../services/api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import type MovieInfo from "../MovieInfo";
+import type { MovieInfo, SpokenLanguages } from "../MovieInfo";
 import "../css/Details.css";
 
 export default function Details() {
@@ -29,6 +29,7 @@ export default function Details() {
                     backgroundColor: "#00000",
                     backgroundPosition: "center",
                     backgroundSize: "contain",
+                    height: "95vh",
                 };
 
                 setDivBg(bgImgDiv);
@@ -53,7 +54,8 @@ export default function Details() {
                     <img className="poster" src={movie!.poster_path ? 
                             imgPath + w500 + movie!.poster_path : noImageFound }>
                     </img>
-                    <fieldset className="general-info">
+
+                    <div className="general-info">
                         <legend className="movie-title"><b>{movie!.title}</b></legend>
                         { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
                     
@@ -85,20 +87,19 @@ export default function Details() {
 
                         <fieldset>
                             <legend>Available Languages:</legend>
-                                { movie!.spoken_languages.map(
-                                    (lang, i) => <p className="tag" key={i}>{lang.english_name}</p>) }
+                                { getLanguages(movie!.spoken_languages)}
                         </fieldset>
 
                         { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
                         { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
                         { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
-                    </fieldset>
+                    </div>
+
+                    <div className="desc">
+                        <h4>Description</h4>
+                        <p>{movie!.overview}</p>
+                    </div>
                 </div>
-                <fieldset className="desc">
-                    <legend>Description</legend>
-                    <p>{movie!.overview}</p>
-                </fieldset>
-                {/* <img className="background-img" src={imgPath + og + movie!.backdrop_path}></img> */}
             </div>   
         }
     </>)
@@ -108,4 +109,14 @@ function getReleaseDate(stringDate: string): string {
     const dateArray = stringDate.split("-");
     const correctOrder = `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`;
     return correctOrder;
+}
+
+function getLanguages(languagesArray: SpokenLanguages[]): string {
+    let langs = "";
+
+    languagesArray.forEach(lang => {
+        langs += `${lang.english_name}, `
+    });
+
+    return langs.length != 0 ? langs.substring(0, langs.length - 2) : "none";
 }
