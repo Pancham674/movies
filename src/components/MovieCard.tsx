@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type MovieInfo from "../MovieInfo";
+import type { MovieInfo } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";  
 
 export default function MovieCard({currentMovie}: {currentMovie: MovieInfo}) {

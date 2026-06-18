@@ -2,7 +2,7 @@ import { getPopularMovies, getSearchedMovies } from "../services/api";
 import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
 import { useState, useEffect } from "react";
-import type MovieInfo from "../MovieInfo";
+import type { MovieInfo }from "../MovieInfo";
 import Search from "../components/Search";
 
 export default function Home() {

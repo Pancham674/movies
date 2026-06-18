@@ -7,7 +7,7 @@ import "../css/Details.css";
 export default function Details() {
     const [isLoading, setIsLoading] = useState(true);
     const [movie, setMovie] = useState<MovieInfo>();
-    const [divBg, setDivBg] = useState<React.CSSProperties>({});
+    const [divBg, setDivBg] = useState("");
     const [error, setError] = useState("");
     const movId = Number(useParams().id);
 
@@ -24,14 +24,7 @@ export default function Details() {
                 const mov: MovieInfo = await getMovieDetails(movId);
                 setMovie(mov);
 
-                const bgImgDiv : React.CSSProperties = {  
-                    backgroundImage: mov.backdrop_path ? `url(${imgPath + og + mov!.backdrop_path})` : "",
-                    backgroundColor: "#00000",
-                    backgroundPosition: "center",
-                    backgroundSize: "contain",
-                    height: "95vh",
-                };
-
+                const bgImgDiv = mov!.backdrop_path ? imgPath + og + mov!.backdrop_path : "";
                 setDivBg(bgImgDiv);
             } catch (error: any) {
                 console.log(error);
@@ -49,58 +42,60 @@ export default function Details() {
             <div className="error-message">{error}</div> :
             isLoading ? 
             <p>Loading!!</p> :
-            <div style={divBg}>
-                <div className="details">
-                    <img className="poster" src={movie!.poster_path ? 
-                            imgPath + w500 + movie!.poster_path : noImageFound }>
-                    </img>
+                <>
+                    <div className="details">
+                        <img className="poster" src={movie!.poster_path ? 
+                                imgPath + w500 + movie!.poster_path : noImageFound }>
+                        </img>
 
-                    <div className="general-info">
-                        <legend className="movie-title"><b>{movie!.title}</b></legend>
-                        { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
-                    
-                        <fieldset>
-                            <legend>Genres</legend>
-                                { movie!.genres.map(
-                                    gen => <p className="tag" key={gen.id}>{gen.name}</p>) }
-                        </fieldset>
-                    
-                        <p>Status: {movie!.status}</p>
-                        <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
-                        { movie!.runtime !== 0 && <p>Runtime: {`${Math.floor(movie!.runtime / 60)}H ${Number(movie!.runtime) % 60}`}M</p>}
-                        { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
-                    
-                        <fieldset>
-                            <legend>Production Companies:</legend>
-                            { movie!.production_companies.map(
-                                comp => comp.logo_path ? 
-                                <img key={comp.id} src={imgPath + w200 + comp.logo_path} alt={comp.name}></img> :
-                                <p key={comp.id}>{comp.name}</p>) 
-                            }
-                        </fieldset>
+                        <div className="general-info">
+                            <legend className="movie-title"><b>{movie!.title}</b></legend>
+                            { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
+                            <br />
+                            {/* add these two into a div contained within a gridso they can appear both next to eachother and under */}
+                            <p>Status: {movie!.status}</p>
+                            <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
+                            { movie!.runtime !== 0 && <p>Runtime: {`${Math.floor(movie!.runtime / 60)}H ${Number(movie!.runtime) % 60}`}M</p>}
+                            { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
+                            <br /> <br />
+                            { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
+                            { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
+                            { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
+                            <br />
+                            <fieldset>
+                                <legend>Genres</legend>
+                                    { movie!.genres.map(
+                                        (gen, i) => <p key={i}><a href="#" className="tag" key={gen.id}>{gen.name}</a>,  </p>) }
+                            </fieldset>
+                        
+                            <fieldset>
+                                <legend>Production Companies:</legend>
+                                { movie!.production_companies.map(
+                                    comp => <img key={comp.id} src={imgPath + w200 + comp.logo_path} alt={comp.name}></img>) 
+                                }
+                            </fieldset>
 
-                        <fieldset>
-                            <legend>Production Countries:</legend>
-                            { movie!.production_countries.map(
-                                (coun, i) => <p className="tag" key={i}>{coun.name}</p>) }
-                        </fieldset>
+                            <fieldset>
+                                <legend>Production Countries:</legend>
+                                { movie!.production_countries.map(
+                                    (coun, i) => <p className="tag" key={i}>{coun.name}, </p>) }
+                            </fieldset>
 
-                        <fieldset>
-                            <legend>Available Languages:</legend>
-                                { getLanguages(movie!.spoken_languages)}
-                        </fieldset>
+                            <fieldset>
+                                <legend>Available Languages:</legend>
+                                    { getLanguages(movie!.spoken_languages)}
+                            </fieldset>
+                            <br />
+                        </div>
 
-                        { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
-                        { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
-                        { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
-                    </div>
+                        <div className="desc">
+                            <h4>Description</h4>
+                            <p>{movie!.overview}</p>
+                        </div>
 
-                    <div className="desc">
-                        <h4>Description</h4>
-                        <p>{movie!.overview}</p>
-                    </div>
-                </div>
-            </div>   
+                    </div>   
+                    <div style={{ backgroundImage: `url(${divBg})` }} /> {/*fix this*/}
+                </>
         }
     </>)
 }
