@@ -43,6 +43,7 @@ export default function Details() {
             isLoading ? 
             <p>Loading!!</p> :
                 <>
+                    <div className="bg" style={{ backgroundImage: `url(${divBg})` }} />
                     <div className="details">
                         <img className="poster" src={movie!.poster_path ? 
                                 imgPath + w500 + movie!.poster_path : noImageFound }>
@@ -52,16 +53,20 @@ export default function Details() {
                             <legend className="movie-title"><b>{movie!.title}</b></legend>
                             { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
                             <br />
-                            {/* add these two into a div contained within a gridso they can appear both next to eachother and under */}
-                            <p>Status: {movie!.status}</p>
-                            <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
-                            { movie!.runtime !== 0 && <p>Runtime: {`${Math.floor(movie!.runtime / 60)}H ${Number(movie!.runtime) % 60}`}M</p>}
+                            <div className="other-info">
+                                <div>
+                                    <p>Status: {movie!.status}</p>
+                                    <p>Release Date: {getReleaseDate(movie!.release_date)}</p>
+                                    { movie!.runtime !== 0 && <p>Runtime: {`${Math.floor(movie!.runtime / 60)}H ${Number(movie!.runtime) % 60}`}M</p>}
+                                </div>
+                                <div>
+                                    { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
+                                    { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
+                                    { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
+                                </div>
+                            </div>
                             { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
-                            <br /> <br />
-                            { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
-                            { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
-                            { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
-                            <br />
+
                             <fieldset>
                                 <legend>Genres</legend>
                                     { movie!.genres.map(
@@ -85,16 +90,13 @@ export default function Details() {
                                 <legend>Available Languages:</legend>
                                     { getLanguages(movie!.spoken_languages)}
                             </fieldset>
-                            <br />
                         </div>
 
                         <div className="desc">
                             <h4>Description</h4>
                             <p>{movie!.overview}</p>
-                        </div>
-
-                    </div>   
-                    <div style={{ backgroundImage: `url(${divBg})` }} /> {/*fix this*/}
+                        </div>   
+                    </div>
                 </>
         }
     </>)

@@ -1,7 +1,7 @@
 .details {
     display: grid;
-    column-gap: 0.5em;
-    row-gap: 1em;
+    grid-template-columns: 1.25fr 2fr;
+    gap: 1em;
     margin: 2em 5em;
     grid-template-areas:
     "poster info"
@@ -9,54 +9,26 @@
     justify-items: center;
     align-items: center;
     justify-content: center;
+    animation: fadeIn 0.5s ease-in-out backwards;
 }
 
 .poster, .general-info, .desc {
     border-radius: 30px;
 }
 
-.poster {
-    grid-area: poster;
-    width: 100%;
-    /* max-height: 100%; */
-}
 .poster, .general-info {
-    aspect-ratio: 1 / 2;
     max-height: 800px;
-    max-width: 400px;
     min-width: 250px;
     min-height: 500px;
 }
 
-.bg {
-    filter: blur(5px) grayscale(10%);
-    z-index: -1;
-    position: absolute;
-    background-color: #000000;
-    background-position: center;
-    background-size: contain;
-    height: 100%;
-}
-
-.general-info {
-    grid-area: info;
-}
-
 .general-info > fieldset {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30px, 100px));
+    overflow: auto;
+    column-gap: 0.5em;
     margin-top: 10px;
     padding: 5px;
-    display: flex;
-}
-
-fieldset > img {
-    aspect-ratio: 2 / 1;
-    width: 25%;
-}
-
-.desc {
-    grid-area: desc;
-    width: 100%;
-    min-width: 50%;
 }
 
 .general-info, .desc {
@@ -69,14 +41,59 @@ legend, .movie-subtitle {
     font-size: 1.25rem;
 } 
 
+fieldset > img {
+    width: 80%;
+}
+
+.poster {
+    grid-area: poster;
+    width: 100%;
+    height: 100%;
+}
+
+.bg {
+    z-index: -1;
+    filter: blur(5px) grayscale(10%);
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: #242424;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+}
+
+
+.general-info {
+    grid-area: info;
+    width: 100%;
+    aspect-ratio: 1 / 2;
+}
+
+.desc {
+    grid-area: desc;
+    width: 100%;
+    min-width: 50%;
+}
+
+.other-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 230px));
+}
+
+.other-info > div {
+    height: 100%;
+}
+
 .main-content {
     padding: 0;
 }
+
 
 .movie-title , .movie-subtitle {
     text-align: center;
 }
 
-.movie-title {
+.movie-title , .desc h4 {
     font-size: 1.75rem;
 }
