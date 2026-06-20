@@ -1,7 +1,7 @@
-import { getMovieDetails } from "../services/api";
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { getMovieDetails, getMoviesWithGenre } from "../services/api";
 import type { MovieInfo, SpokenLanguages } from "../MovieInfo";
+import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "../css/Details.css";
 
 export default function Details() {
@@ -70,7 +70,7 @@ export default function Details() {
                             <fieldset>
                                 <legend>Genres</legend>
                                     { movie!.genres.map(
-                                        (gen, i) => <p key={i}><a href="#" className="tag" key={gen.id}>{gen.name}</a>,  </p>) }
+                                        (gen, i) => <p key={i}><Link to={`/genres/${gen.id}`} className="tag" key={gen.id}>{gen.name}</Link>,  </p>) }
                             </fieldset>
                         
                             <fieldset>

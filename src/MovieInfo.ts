@@ -39,3 +39,8 @@ interface ProductionCompanies {
   name: string,
   id: number,
 }
+
+export interface Genre {
+  id: number,
+  name: string
+}

@@ -12,6 +12,7 @@ export default function App() {
     <main className="main-content">
       <Routes>
         <Route path="/" element={<Home />}/>
+        <Route path="/genres/:genreId" element={<Home />}/>
         <Route path="/details/:id" element={<Details />}/>
         <Route path="/favorites" element={<Favorites />}/>
       </Routes>

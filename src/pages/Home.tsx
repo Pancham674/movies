@@ -1,18 +1,20 @@
-import { getPopularMovies, getSearchedMovies } from "../services/api";
+import { getPopularMovies, getSearchedMovies, getMoviesWithGenre } from "../services/api";
 import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
+import type { Genre, MovieInfo } from "../MovieInfo";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import type { MovieInfo }from "../MovieInfo";
 import Search from "../components/Search";
 
 export default function Home() {
-    const { isLoading, setIsLoading } = useMovieContext();
+    const { isLoading, setIsLoading, genres } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
-    
+    const genreId = Number(useParams().genreId)
+
     useEffect(() => {
-            const loadPopularMovies = async () => {
+            async function loadPopularMovies() {
                 try {
                     const popularMovies = await getPopularMovies();
                     setMovies(popularMovies);
@@ -23,8 +25,27 @@ export default function Home() {
                     setIsLoading(false);
                 }
             }
-            loadPopularMovies();
-        }, []
+
+            async function loadMoviesWithGenre(genreId: number){
+                try {
+                    const moviesWithGenres = await getMoviesWithGenre(genreId);
+                    setMovies(moviesWithGenres);
+                } catch (error: any) {
+                    console.log(error);
+                    setError(error.message);
+                } finally{
+                    setIsLoading(false);
+                }
+            }
+
+            if (genreId)
+            {
+                loadMoviesWithGenre(genreId);
+            } else {
+                loadPopularMovies();
+            }
+
+        }, [genreId]
     );
 
     const searchMovies = async (e: MouseEvent) => {
@@ -59,11 +80,25 @@ export default function Home() {
                 <h3 className="loading">Hang on, we're still loading!</h3> :
                 movies.length == 0 ?
                     <p className="no-movies">No movies could be found.</p> :
-                    <div className="movies-grid">{
-                        movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
-                    </div>
+                    <>
+                        { !Number.isNaN(genreId) ? <p>Movies with the genre { getFilteredGenres(genreId, genres) }:</p> : ""}
+                        <div className="movies-grid">{
+                            movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
+                        </div>
+                    </>
         } 
       </div>
     </>
     );
+}
+
+function getFilteredGenres(genreId: number, genres: Genre[]) {
+    let filteresGenStr = "";
+    const filteredGenArr = genres.filter(g => g.id === genreId);
+
+    filteredGenArr.forEach(g => {
+        filteresGenStr += `${g.name}, `;
+    })
+
+    return filteresGenStr.substring(0, filteresGenStr.length - 2);
 }
