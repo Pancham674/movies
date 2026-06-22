@@ -37,6 +37,14 @@
     padding: 25px;
 }
 
+.movie-title , .movie-subtitle {
+    text-align: center;
+}
+
+.movie-title , .desc h4 {
+    font-size: 1.5rem;
+}
+
 legend, .movie-subtitle {
     font-size: 1.25rem;
 } 
@@ -89,11 +97,6 @@ fieldset > img {
     padding: 0;
 }
 
-
-.movie-title , .movie-subtitle {
-    text-align: center;
-}
-
-.movie-title , .desc h4 {
-    font-size: 1.75rem;
+.movie-subtitle {
+    margin: 0;
 }

@@ -6,10 +6,9 @@
 
 .search-form {
   max-width: 600px;
-  margin: 0 auto 2rem;
+  margin: 1.5rem auto;
   display: flex;
   gap: 1rem;
-  padding: 0 1rem;
   box-sizing: border-box;
 }
 
@@ -60,4 +59,5 @@
   padding: 1rem;
   width: 100%;
   box-sizing: border-box;
+  justify-content: center;
 }

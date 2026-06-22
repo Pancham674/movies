@@ -1,8 +1,9 @@
 const API_KEY = "api_key=7770a465a168d8c734f309672b4b4aea";
 const BASE_URL = "https://api.themoviedb.org/3";
 //add pages: add useState that keeps track of page number and reset it if the context/query changes
-//when when adding genre to filter in the search make it possible to search for multiple, add a filter(confirm) and reset button
-//i have to 
+//when when adding genre to filter in the search make it possible to search for multiple
+// add a filter(confirm) and reset button. Perhabs a dropdown to filter too
+//i have to make it so instead of one, you can search for multiple (its currently only one)
 
 export const getPopularMovies = async () =>  {
     const URL = `${BASE_URL}/movie/popular?${API_KEY}`;
