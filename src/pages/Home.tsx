@@ -5,11 +5,13 @@ import type { Genre, MovieInfo } from "../MovieInfo";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Search from "../components/Search";
+import PageButtons from "../components/PageButtons";
 
 export default function Home() {
     const { isLoading, setIsLoading, genres } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [pageNum, setPageNum] = useState(1);
     const [error, setError] = useState("");
     const genreId = Number(useParams().genreId)
 
@@ -48,6 +50,8 @@ export default function Home() {
         }, [genreId]
     );
 
+    
+
     const searchMovies = async (e: MouseEvent) => {
         e.preventDefault();
         if (!searchTerm.trim() || isLoading) { return; }
@@ -85,6 +89,7 @@ export default function Home() {
                         <div className="movies-grid">{
                             movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
                         </div>
+                        <PageButtons  />
                     </>
         } 
       </div>
