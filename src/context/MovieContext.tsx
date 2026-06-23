@@ -1,6 +1,5 @@
 import { createContext, useState, useContext, useEffect, type SetStateAction } from "react";
-import type { MovieInfo, Genre } from "../MovieInfo";
-import { getAllGenres } from "../services/api";
+import type { MovieInfo } from "../MovieInfo";
 
 interface MovieContextType {
     favMovies: MovieInfo[],
@@ -8,8 +7,7 @@ interface MovieContextType {
     removeFromFavs: (movId: number) => void,
     isFavorite: (movId: number) => boolean,
     isLoading: boolean,
-    setIsLoading: React.Dispatch<SetStateAction<boolean>>,
-    genres: Genre[]
+    setIsLoading: React.Dispatch<SetStateAction<boolean>>
 }
 
 const MovieContext = createContext<MovieContextType>(null!);
@@ -20,7 +18,6 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isInit, setIsInit] = useState(true);
-    const [genres, setGenres] = useState<Genre[]>([]);
 
     //retrieve the favMovies from localStorage on the first load
     useEffect(() => {
@@ -30,19 +27,6 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
             setFavMovies(favs);
         }
         setIsInit(false);
-
-
-        const loadAllGenres = async () => {
-            try {
-                const gens: Genre[] = await getAllGenres();
-                setGenres(gens);                    
-            } 
-            catch (error: any) {
-                console.log(error);
-            }
-        }
-
-        loadAllGenres();
     }, []);
 
     //everytime a value within favMovies change we update the localStorage
@@ -68,7 +52,6 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const values: MovieContextType = {
         favMovies, addToFavs, removeFromFavs, isFavorite, 
         isLoading, setIsLoading,
-        genres
     }
 
     return (

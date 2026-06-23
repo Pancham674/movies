@@ -1,0 +1,19 @@
+#filters {
+  grid-template-columns: repeat(auto-fit, minmax(min-content, 100px));
+  grid-auto-rows: min-content;
+  overflow: auto;
+  display: grid;
+  width: 100%;
+  z-index: 2;
+  gap: 0.2em;
+}
+
+#filters.hidden {
+  display: none;
+}
+
+.genre-tag {
+  padding: 0.3em 0.6em;
+  font-size: 0.8rem;
+}
+

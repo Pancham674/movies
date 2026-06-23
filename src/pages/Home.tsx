@@ -1,4 +1,4 @@
-import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, changePage } from "../services/api";
+import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, changePage, getAllGenres } from "../services/api";
 import type { Genre, MovieInfo, PageInfo } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";
 import PageButtons from "../components/PageButtons";
@@ -7,17 +7,33 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Search from "../components/Search";
 import "../css/Home.css";
+import Filters from "../components/Filters";
 
 export default function Home() {
-    const { isLoading, setIsLoading, genres } = useMovieContext();
+    const { isLoading, setIsLoading } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [pageInfo, setPageInfo] = useState<PageInfo>();
+    const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
     const genreId = Number(useParams().genreId)
+    
+    useEffect(() => {
+            const loadAllGenres = async () => {
+                try {
+                    const gens: Genre[] = await getAllGenres();
+                    setGenres(gens);                    
+                } 
+                catch (error: any) {
+                    console.log(error);
+                }
+            }
+            
+            loadAllGenres();
+    }, []);
 
     useEffect(() => {
-            async function loadPopularMovies() {
+        async function loadPopularMovies() {
                 try {
                     const fullData = await getPopularMovies();
 
@@ -44,10 +60,10 @@ export default function Home() {
                     setIsLoading(false);
                 }
             }
-
+             
             if (genreId)
-            {
-                loadMoviesWithGenre(genreId);
+                {
+                    loadMoviesWithGenre(genreId);
             } else {
                 loadPopularMovies();
             }
@@ -92,29 +108,30 @@ export default function Home() {
     }
 
     return (<>
-      <div className="Home">      
-        <Search searchMoviesFunc={searchMovies}
-            currentSearchTerm={searchTerm}
-            setSearchTermFunc={setSearchTerm}
-        />
-        
+        <div className="filter-container">
+            <Search searchMoviesFunc={searchMovies}
+                currentSearchTerm={searchTerm}
+                setSearchTermFunc={setSearchTerm}
+            />  
+            <Filters genres={genres} />
+        </div>
+
         { 
-        error ? 
-            <div className="error-message">{error}</div> :
-            isLoading ?
-                <h3 className="loading">Hang on, we're still loading!</h3> :
-                movies.length == 0 ?
-                    <p className="no-movies">No movies could be found.</p> :
-                    <>
-                        { !Number.isNaN(genreId) ? <p className="movie-genres">Movies with the genre <b>{ getFilteredGenres(genreId, genres) }</b>:</p> : ""}
-                        <div className="movies-grid">{
-                            movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
-                        </div>
-                        <PageButtons handlePageChange={handlePageChange} currentPageNum={pageInfo!.current} maxPageNum={pageInfo!.totalPages} />
-                    </>
+            error ? 
+                <div className="error-message">{error}</div> :
+                isLoading ?
+                    <h3 className="loading">Hang on, we're still loading!</h3> :
+                    movies.length == 0 ?
+                        <p className="no-movies">No movies could be found.</p> :
+                        <>
+                            { !Number.isNaN(genreId) ? <p className="movie-genres">Movies with the genre <b>{ getFilteredGenres(genreId, genres) }</b>:</p> : ""}
+                            <div className="movies-grid">{
+                                movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
+                            </div>
+                            <PageButtons handlePageChange={handlePageChange} currentPageNum={pageInfo!.current} maxPageNum={pageInfo!.totalPages} />
+                        </>
         } 
-      </div>
-    </>
+        </>
     );
 }
 
