@@ -83,7 +83,6 @@ export default function Home() {
             setPageInfo(fullData.pageInfo);
             
             setError("");
-            setSearchTerm("");
         } catch(error: any) {
             console.log(error);
             setError(error.message);
@@ -107,7 +106,7 @@ export default function Home() {
                 movies.length == 0 ?
                     <p className="no-movies">No movies could be found.</p> :
                     <>
-                        { !Number.isNaN(genreId) ? <p>Movies with the genre { getFilteredGenres(genreId, genres) }:</p> : ""}
+                        { !Number.isNaN(genreId) ? <p className="movie-genres">Movies with the genre <b>{ getFilteredGenres(genreId, genres) }</b>:</p> : ""}
                         <div className="movies-grid">{
                             movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
                         </div>

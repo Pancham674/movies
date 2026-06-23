@@ -23,3 +23,8 @@
   box-sizing: border-box;
   justify-content: center;
 }
+
+.movie-genres {
+  text-align: center;
+  font-size: 2rem;
+}
