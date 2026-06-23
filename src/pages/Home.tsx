@@ -56,7 +56,7 @@ export default function Home() {
     );
     
     const handlePageChange = async (toPageNum: number) => {
-        if (toPageNum < 1 || toPageNum > pageInfo!.totalPages) {
+        if (toPageNum <= 0 || toPageNum > pageInfo!.totalPages) {
             return;
         }
 
@@ -107,7 +107,6 @@ export default function Home() {
                 movies.length == 0 ?
                     <p className="no-movies">No movies could be found.</p> :
                     <>
-                        <PageButtons handlePageChange={handlePageChange} currentPageNum={pageInfo!.current} maxPageNum={pageInfo!.totalPages} />
                         { !Number.isNaN(genreId) ? <p>Movies with the genre { getFilteredGenres(genreId, genres) }:</p> : ""}
                         <div className="movies-grid">{
                             movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}

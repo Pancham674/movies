@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import "../css/Search.css"
 
 export default function Search({searchMoviesFunc, setSearchTermFunc, currentSearchTerm}: {searchMoviesFunc: (e: any) => void, setSearchTermFunc: Dispatch<SetStateAction<string>>, currentSearchTerm: string}) {
     return (
