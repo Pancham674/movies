@@ -1,6 +1,7 @@
+import type { MovieInfo } from "../MovieInfo";
+
 const API_KEY = "api_key=7770a465a168d8c734f309672b4b4aea";
 const BASE_URL = "https://api.themoviedb.org/3";
-//add pages: add useState that keeps track of page number and reset it if the context/query changes
 //when when adding genre to filter in the search make it possible to search for multiple
 // add a filter(confirm) and reset button. Perhabs a dropdown to filter too
 //i have to make it so instead of one, you can search for multiple (its currently only one)
@@ -15,7 +16,16 @@ export const getPopularMovies = async () =>  {
         throw new Error(message);
     }
     
-    return data.results;
+    const fullData: FullData = {
+        results: data.results,
+        pageInfo: {
+            current: data.page,
+            totalPages: data.total_pages < 500 ? data.total_pages : 500,
+            url: URL
+        }
+    }
+
+    return fullData;
 }
 
 export const getSearchedMovies = async (searchTerm: string) => {
@@ -28,7 +38,16 @@ export const getSearchedMovies = async (searchTerm: string) => {
         throw new Error(message);
     }
     
-    return data.results;
+    const fullData: FullData = {
+        results: data.results,
+        pageInfo: {
+            current: data.page,
+            totalPages: data.total_pages < 500 ? data.total_pages : 500,
+            url: URL
+        }
+    }
+
+    return fullData;
 }
 
 export const getMovieDetails = async (movieId: number) => {
@@ -67,6 +86,47 @@ export const getMoviesWithGenre = async (genreId: number) => {
         throw new Error(message);
     }
 
-    return data.results;
+    const fullData: FullData = {
+        results: data.results,
+        pageInfo: {
+            current: data.page,
+            totalPages: data.total_pages < 500 ? data.total_pages : 500,
+            url: URL
+        }
+    }
+
+    return fullData;
 }
 
+export async function changePage(pageInfo: PageInfo) {
+    const URL = `${pageInfo.url}&page=${pageInfo.current}`;
+    const response = await fetch(URL);
+    const data = await response.json();
+
+    if (!response.ok) {
+        const message = `Error Code ${response.status}: ${data.status_message}`;
+        throw new Error(message);
+    }
+    
+    const fullData: FullData = {
+        results: data.results,
+        pageInfo: {
+            current: data.page,
+            totalPages: data.total_pages < 500 ? data.total_pages : 500,
+            url: URL
+        }
+    }
+
+    return fullData;
+}
+
+interface FullData {
+    results: MovieInfo[],
+    pageInfo: PageInfo
+}
+
+export interface PageInfo {
+    current: number,
+    totalPages: number,
+    url: string
+}

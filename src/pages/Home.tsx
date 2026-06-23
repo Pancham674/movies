@@ -1,4 +1,4 @@
-import { getPopularMovies, getSearchedMovies, getMoviesWithGenre } from "../services/api";
+import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, type PageInfo, changePage } from "../services/api";
 import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/MovieCard";
 import type { Genre, MovieInfo } from "../MovieInfo";
@@ -10,16 +10,18 @@ import PageButtons from "../components/PageButtons";
 export default function Home() {
     const { isLoading, setIsLoading, genres } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
+    const [pageInfo, setPageInfo] = useState<PageInfo>();
     const [searchTerm, setSearchTerm] = useState("");
-    const [pageNum, setPageNum] = useState(1);
     const [error, setError] = useState("");
     const genreId = Number(useParams().genreId)
 
     useEffect(() => {
             async function loadPopularMovies() {
                 try {
-                    const popularMovies = await getPopularMovies();
-                    setMovies(popularMovies);
+                    const fullData = await getPopularMovies();
+
+                    setMovies(fullData.results);
+                    setPageInfo(fullData.pageInfo);
                 } catch (error: any) {
                     console.log(error);
                     setError(error.message);
@@ -30,8 +32,10 @@ export default function Home() {
 
             async function loadMoviesWithGenre(genreId: number){
                 try {
-                    const moviesWithGenres = await getMoviesWithGenre(genreId);
-                    setMovies(moviesWithGenres);
+                    const fullData = await getMoviesWithGenre(genreId);
+                    
+                    setMovies(fullData.results);
+                    setPageInfo(fullData.pageInfo);
                 } catch (error: any) {
                     console.log(error);
                     setError(error.message);
@@ -46,19 +50,36 @@ export default function Home() {
             } else {
                 loadPopularMovies();
             }
-
+            
         }, [genreId]
     );
-
     
+    const handlePageChange = async (toPageNum: number) => {
+        if (toPageNum < 1 || toPageNum > pageInfo!.totalPages) {
+            return;
+        }
+
+        const newInfo = { ...pageInfo!, current: toPageNum };
+        try {
+            const fullData = await changePage(newInfo);
+            setMovies(fullData.results);
+            setPageInfo(newInfo);
+        } catch (error: any) {
+            console.log(error);
+            setError(error.message);
+        }
+    };
 
     const searchMovies = async (e: MouseEvent) => {
         e.preventDefault();
         if (!searchTerm.trim() || isLoading) { return; }
         setIsLoading(true);
+        
         try {
-            const searchedMovies = await getSearchedMovies(searchTerm);
-            setMovies(searchedMovies);
+            const fullData = await getSearchedMovies(searchTerm);
+
+            setMovies(fullData.results);
+            setPageInfo(fullData.pageInfo);
             
             setError("");
             setSearchTerm("");
@@ -85,11 +106,12 @@ export default function Home() {
                 movies.length == 0 ?
                     <p className="no-movies">No movies could be found.</p> :
                     <>
+                        <PageButtons handlePageChange={handlePageChange} currentPageNum={pageInfo!.current} maxPageNum={pageInfo!.totalPages} />
                         { !Number.isNaN(genreId) ? <p>Movies with the genre { getFilteredGenres(genreId, genres) }:</p> : ""}
                         <div className="movies-grid">{
                             movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
                         </div>
-                        <PageButtons  />
+                        <PageButtons handlePageChange={handlePageChange} currentPageNum={pageInfo!.current} maxPageNum={pageInfo!.totalPages} />
                     </>
         } 
       </div>
