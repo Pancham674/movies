@@ -1,11 +1,12 @@
-import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, type PageInfo, changePage } from "../services/api";
+import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, changePage } from "../services/api";
+import type { Genre, MovieInfo, PageInfo } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";
+import PageButtons from "../components/PageButtons";
 import MovieCard from "../components/MovieCard";
-import type { Genre, MovieInfo } from "../MovieInfo";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Search from "../components/Search";
-import PageButtons from "../components/PageButtons";
+import "../css/Home.css";
 
 export default function Home() {
     const { isLoading, setIsLoading, genres } = useMovieContext();
@@ -74,7 +75,7 @@ export default function Home() {
         e.preventDefault();
         if (!searchTerm.trim() || isLoading) { return; }
         setIsLoading(true);
-        
+
         try {
             const fullData = await getSearchedMovies(searchTerm);
 

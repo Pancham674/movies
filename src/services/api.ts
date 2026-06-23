@@ -1,4 +1,4 @@
-import type { MovieInfo } from "../MovieInfo";
+import type { MovieInfo, PageInfo } from "../MovieInfo";
 
 const API_KEY = "api_key=7770a465a168d8c734f309672b4b4aea";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -123,10 +123,4 @@ export async function changePage(pageInfo: PageInfo) {
 interface FullData {
     results: MovieInfo[],
     pageInfo: PageInfo
-}
-
-export interface PageInfo {
-    current: number,
-    totalPages: number,
-    url: string
 }

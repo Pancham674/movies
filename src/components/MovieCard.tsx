@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
-import type { MovieInfo } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";  
+import type { MovieInfo } from "../MovieInfo";
+import { Link } from "react-router-dom";
+import "../css/MovieCard.css";
 
 export default function MovieCard({currentMovie}: {currentMovie: MovieInfo}) {
   const { isFavorite, addToFavs, removeFromFavs } = useMovieContext();

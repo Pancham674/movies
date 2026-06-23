@@ -4,6 +4,7 @@ import Favorites from "./pages/Favorites";
 import NavBar from "./components/NavBar";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
+import "./css/App.css";
 
 export default function App() {
   return (

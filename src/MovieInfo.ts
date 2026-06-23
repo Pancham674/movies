@@ -17,7 +17,7 @@ export interface MovieInfo {
   production_companies: ProductionCompanies[],
 }
 
- interface ProductionCountries {
+interface ProductionCountries {
   iso_3166_1: string,
   name: string
 }
@@ -43,4 +43,10 @@ interface ProductionCompanies {
 export interface Genre {
   id: number,
   name: string
+}
+
+export interface PageInfo {
+    current: number,
+    totalPages: number,
+    url: string
 }

@@ -1,16 +1,26 @@
-import { getMovieDetails } from "../services/api";
 import type { MovieInfo, SpokenLanguages } from "../MovieInfo";
+import { useMovieContext } from "../context/MovieContext";  
+import { getMovieDetails } from "../services/api";
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../css/Details.css";
 
 export default function Details() {
+    const { isFavorite, addToFavs, removeFromFavs } = useMovieContext();
     const [isAnyInfoAvailable , setisAnyInfoAvailable] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+
     const [movie, setMovie] = useState<MovieInfo>();
     const [divBg, setDivBg] = useState("");
     const [error, setError] = useState("");
+
     const movId = Number(useParams().id);
+    const isCurrentFavorite = isFavorite(movId);
+
+    const favoriteMovie = (e: any) => {
+        e.preventDefault();
+        isCurrentFavorite ? removeFromFavs(movId) : movie ? addToFavs(movie) : null;
+    }
 
     const noImageFound = "https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
     const imgPath = "https://image.tmdb.org/t/p/";
@@ -48,7 +58,7 @@ export default function Details() {
             <div className="error-message">{error}</div> :
             isLoading ? 
             <p>Loading!!</p> :
-                <>
+                <div className="Details">
                     <div className="bg" style={{ backgroundImage: `url(${divBg})` }} />
                     <div className="details">
                         <img className="poster"
@@ -59,6 +69,8 @@ export default function Details() {
                         <div className="general-info">
                             <legend className="movie-title"><b>{movie!.title}</b></legend>
                             { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
+                            <button className={`favorite-btn ${isCurrentFavorite ? "active" : ""}`} onClick={favoriteMovie}>♥</button>
+
                             <br />
                             <div className="other-info">
                                 <div>
@@ -124,7 +136,7 @@ export default function Details() {
                             </p>
                         </div>   
                     </div>
-                </>
+                </div>
         }
     </>)
 }

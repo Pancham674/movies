@@ -73,6 +73,7 @@ fieldset > img {
 
 
 .general-info {
+    position: relative;
     grid-area: info;
     width: 100%;
     aspect-ratio: 1 / 2;

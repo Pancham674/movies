@@ -1,4 +1,4 @@
-.PageButtons p, button {
+.PageButtons p, .PageButtons button {
     border-radius: 4px;
     padding: 0.3em .6em
 }
@@ -10,14 +10,13 @@
     align-items: center;
 }
 
-button {
+.PageButtons button {
     background-color: #e50914;
     color: white;
 }
 
 .PageButtons p {
     border: #1a1a1a 0.5px dashed;
-    /* padding: 0.5em 1em; */
     background-color: #1a1a1a;
     font-weight: 600;
 }
