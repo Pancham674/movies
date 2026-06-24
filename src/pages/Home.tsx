@@ -1,5 +1,5 @@
 import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, changePage, getAllGenres } from "../services/api";
-import type { Genre, MovieInfo, PageInfo } from "../MovieInfo";
+import type { Genre, GenreItem, MovieInfo, PageInfo } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";
 import PageButtons from "../components/PageButtons";
 import MovieCard from "../components/MovieCard";
@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Search from "../components/Search";
 import "../css/Home.css";
-import Filters from "../components/Filters";
 
 export default function Home() {
     const { isLoading, setIsLoading } = useMovieContext();
@@ -87,13 +86,13 @@ export default function Home() {
         }
     };
 
-    const searchMovies = async (e: MouseEvent) => {
+    const searchMovies = async (e: MouseEvent, genreList: GenreItem[]) => {
         e.preventDefault();
-        if (!searchTerm.trim() || isLoading) { return; }
+        if (!searchTerm.trim() || isLoading || !genreList.find(g => g.isActive)) { return; }
         setIsLoading(true);
 
         try {
-            const fullData = await getSearchedMovies(searchTerm);
+            const fullData = await getSearchedMovies(searchTerm, genreList);
 
             setMovies(fullData.results);
             setPageInfo(fullData.pageInfo);
@@ -112,8 +111,8 @@ export default function Home() {
             <Search searchMoviesFunc={searchMovies}
                 currentSearchTerm={searchTerm}
                 setSearchTermFunc={setSearchTerm}
+                genres={genres}
             />  
-            <Filters genres={genres} />
         </div>
 
         { 

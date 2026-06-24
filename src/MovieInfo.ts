@@ -50,3 +50,9 @@ export interface PageInfo {
     totalPages: number,
     url: string
 }
+
+export interface GenreItem {
+    id: number;
+    name: string,
+    isActive: boolean
+}

@@ -1,4 +1,4 @@
-import type { MovieInfo, PageInfo } from "../MovieInfo";
+import type { MovieInfo, PageInfo, GenreItem } from "../MovieInfo";
 
 const API_KEY = "api_key=7770a465a168d8c734f309672b4b4aea";
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -28,7 +28,7 @@ export const getPopularMovies = async () =>  {
     return fullData;
 }
 
-export const getSearchedMovies = async (searchTerm: string) => {
+export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem[]) => {
     const URL = `${BASE_URL}/search/movie?${API_KEY}&query=${encodeURIComponent(searchTerm)}`;
     const response = await fetch(URL);
     const data = await response.json();
