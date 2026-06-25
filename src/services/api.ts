@@ -29,21 +29,59 @@ export const getPopularMovies = async () =>  {
 }
 
 export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem[]) => {
-    const URL = `${BASE_URL}/search/movie?${API_KEY}&query=${encodeURIComponent(searchTerm)}`;
-    const response = await fetch(URL);
-    const data = await response.json();
-
-    if (!response.ok) {
-        const message = `Error Code ${response.status}: ${data.status_message}`;
-        throw new Error(message);
-    }
+    let sdURL = "";              //url for seachedData
+    let searchedData: JsonResponse | undefined = undefined;
     
+    let fdURL = "";              //url for filteredData
+    let filteredData: JsonResponse | undefined = undefined;
+    
+    let usedURL = "";
+    let matchedData: any;
+
+    if (searchTerm){
+        sdURL = `${BASE_URL}/search/movie?${API_KEY}&query=${encodeURIComponent(searchTerm)}`;
+        const response = await fetch(sdURL);
+        searchedData = await response.json();
+
+        if (!response.ok) {
+            const message = `Error Code ${response.status}: ${searchedData!.status_message}`;
+            throw new Error(message);
+        }
+    }
+
+    let selectedGenres = genreList.filter(g => g.isActive);
+    if (selectedGenres.length > 0){
+        fdURL = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${selectedGenres.map(g => g.id)}`;
+        const response = await fetch(fdURL);
+        filteredData = await response.json();
+
+        if (!response.ok) {
+            const message = `Error Code ${response.status}: ${filteredData!.status_message}`;
+            throw new Error(message);
+        }
+    }
+
+    if (searchedData && filteredData) {
+        usedURL = "";
+        matchedData.results = searchedData.results.filter((m: any) => filteredData.results.includes(m))
+        matchedData.current = 1;
+        matchedData.total_messages = 1; 
+    }
+    else if (searchedData) {
+        usedURL = sdURL;
+        matchedData = searchedData;
+    } 
+    else if (filteredData) {
+        usedURL = fdURL;
+        matchedData = filteredData;
+    }
+
     const fullData: FullData = {
-        results: data.results,
+        results: matchedData.results,
         pageInfo: {
-            current: data.page,
-            totalPages: data.total_pages < 500 ? data.total_pages : 500,
-            url: URL
+            current: matchedData.page,
+            totalPages: matchedData.total_pages < 500 ? matchedData.total_pages : 500,
+            url: usedURL
         }
     }
 
@@ -123,4 +161,11 @@ export async function changePage(pageInfo: PageInfo) {
 interface FullData {
     results: MovieInfo[],
     pageInfo: PageInfo
+}
+
+interface JsonResponse {
+    results: string[],
+    page: number;
+    total_pages: number,
+    status_message: string
 }

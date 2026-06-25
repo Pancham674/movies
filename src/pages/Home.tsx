@@ -15,6 +15,7 @@ export default function Home() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
+    // const [gsearchedGenres]
     const genreId = Number(useParams().genreId)
     
     useEffect(() => {
@@ -60,9 +61,8 @@ export default function Home() {
                 }
             }
              
-            if (genreId)
-                {
-                    loadMoviesWithGenre(genreId);
+            if (genreId) {
+                loadMoviesWithGenre(genreId);
             } else {
                 loadPopularMovies();
             }
@@ -88,16 +88,16 @@ export default function Home() {
 
     const searchMovies = async (e: MouseEvent, genreList: GenreItem[]) => {
         e.preventDefault();
-        if (!searchTerm.trim() || isLoading || !genreList.find(g => g.isActive)) { return; }
+        if ((!searchTerm.trim() && !genreList.find(g => g.isActive)) || isLoading) { return; }
         setIsLoading(true);
 
         try {
             const fullData = await getSearchedMovies(searchTerm, genreList);
 
+            setError("");
             setMovies(fullData.results);
             setPageInfo(fullData.pageInfo);
-            
-            setError("");
+            // setGenres(genreList.filter(g => g.isActive).map(g => g.id));
         } catch(error: any) {
             console.log(error);
             setError(error.message);
