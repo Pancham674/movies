@@ -1,7 +1,7 @@
 import type { MovieInfo, SpokenLanguages } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";  
-import { getMovieDetails } from "../services/api";
 import { Link, useParams } from "react-router-dom";
+import { getMovieDetails } from "../services/api";
 import { useState, useEffect } from "react";
 import "../css/Details.css";
 
@@ -16,17 +16,17 @@ export default function Details() {
 
     const movId = Number(useParams().id);
     const isCurrentFavorite = isFavorite(movId);
-
-    const favoriteMovie = (e: any) => {
-        e.preventDefault();
-        isCurrentFavorite ? removeFromFavs(movId) : movie ? addToFavs(movie) : null;
-    }
-
+    
     const noImageFound = "https://ih1.redbubble.net/image.4905811447.8675/flat,750x,075,f-pad,750x1000,f8f8f8.jpg";
     const imgPath = "https://image.tmdb.org/t/p/";
     const w500 = "w500";
     const w200 = "w200";
     const og = "original";
+
+    const favoriteMovie = (e: any) => {
+        e.preventDefault();
+        isCurrentFavorite ? removeFromFavs(movId) : movie ? addToFavs(movie) : null;
+    }
 
     //Refetch the info everytime movId changes (basically everytime Details gets viewed)
     useEffect(() => {
@@ -92,7 +92,10 @@ export default function Details() {
                                 <fieldset>
                                     <legend>Genres</legend>
                                         { movie!.genres.map(
-                                            (gen, i) => <p key={i}><Link to={`/genres/${gen.id}`} className="tag" key={gen.id}>{gen.name}</Link>,  </p>) }
+                                            (gen, i) => 
+                                                <button key={i} className="tag clickable">
+                                                    <Link key={gen.id} to={`/genres/${gen.id}`} >{gen.name}</Link>
+                                                </button>) }
                                 </fieldset>
                             }
 
@@ -103,7 +106,7 @@ export default function Details() {
                                     { movie!.production_companies.map(
                                         comp => comp.logo_path ?
                                                 <img key={comp.id} src={imgPath + w200 + comp.logo_path}></img> :
-                                                <p>{comp.name}</p>) 
+                                                <p key={comp.id}>{comp.name}</p>) 
                                     }
                                 </fieldset>
                             }

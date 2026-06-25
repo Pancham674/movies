@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import type { Genre, GenreItem } from "../MovieInfo";
+import { useState, useEffect } from "react";
 import GenreFilter from "./GenreFilter";
+import "../css/GenreFilter.css"
 import "../css/Search.css"
-import "../css/Filter.css"
 
 export default function Search({searchMoviesFunc, setSearchTermFunc, currentSearchTerm, genres}: {searchMoviesFunc: (e: any, g: GenreItem[]) => void, setSearchTermFunc: any, currentSearchTerm: string, genres: Genre[]}) {
     const [genreList, setGenreList] = useState<GenreItem[]>([])
@@ -51,9 +51,9 @@ export default function Search({searchMoviesFunc, setSearchTermFunc, currentSear
             </form>
             <div id="filters" className={`${!isFiltersVisible ? "hidden" : ""}`}>
                 { genreList.map(g => 
-                    <GenreFilter genre={g} handleGenreClicked={handleGenreClicked} isActive={g.isActive} />
+                    <GenreFilter key={g.id} genre={g} handleGenreClicked={handleGenreClicked} isActive={g.isActive} />
                 )}</div>
-            <button onClick={toggleFilters}>{btnText}</button>
+            <button className="toggleFilter" onClick={toggleFilters}>{btnText}</button>
         </>
     );
 }

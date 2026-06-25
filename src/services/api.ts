@@ -37,7 +37,7 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
     
     let usedURL = "";
     let matchedData: JsonResponse = {
-        results: {} as any[],
+        results: [] as any[],
         page: 0,
         total_pages: 0,
         status_message: ""  

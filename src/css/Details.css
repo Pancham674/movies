@@ -23,12 +23,12 @@
 }
 
 .general-info > fieldset {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30px, 100px));
-    overflow: auto;
-    column-gap: 0.5em;
     margin-top: 10px;
+    overflow: auto;
+    display: grid;
     padding: 5px;
+    gap: 0.2em;
 }
 
 .general-info, .desc {
@@ -100,4 +100,19 @@ fieldset > img {
 
 .movie-subtitle {
     margin: 0;
+}
+
+.tag.clickable {
+    color: white;
+    background-color: #f40612;
+    padding: 0.3em 0.6em;
+    font-size: 0.8rem;
+}
+
+.tag.clickable > a {
+    color: inherit
+}
+
+.tag.clickable > a:hover {
+    color: inherit
 }
