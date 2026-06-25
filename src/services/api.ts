@@ -36,7 +36,12 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
     let filteredData: JsonResponse | undefined = undefined;
     
     let usedURL = "";
-    let matchedData: any;
+    let matchedData: JsonResponse = {
+        results: {} as any[],
+        page: 0,
+        total_pages: 0,
+        status_message: ""  
+    };
 
     if (searchTerm){
         sdURL = `${BASE_URL}/search/movie?${API_KEY}&query=${encodeURIComponent(searchTerm)}`;
@@ -63,9 +68,9 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
 
     if (searchedData && filteredData) {
         usedURL = "";
+        matchedData.page = 1;
+        matchedData.total_pages = 1; 
         matchedData.results = searchedData.results.filter((m: any) => filteredData.results.includes(m))
-        matchedData.current = 1;
-        matchedData.total_messages = 1; 
     }
     else if (searchedData) {
         usedURL = sdURL;
@@ -164,7 +169,7 @@ interface FullData {
 }
 
 interface JsonResponse {
-    results: string[],
+    results: any[],
     page: number;
     total_pages: number,
     status_message: string
