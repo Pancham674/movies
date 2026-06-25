@@ -70,7 +70,13 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
         usedURL = "";
         matchedData.page = 1;
         matchedData.total_pages = 1; 
-        matchedData.results = searchedData.results.filter((m: any) => filteredData.results.includes(m))
+        searchedData.results.forEach(el => {
+            if (filteredData.results.includes(el)) {
+                matchedData.results.push(el);
+            }
+        });
+
+        // matchedData.results = searchedData.results.filter((m: any) => filteredData.results.includes(m))
     }
     else if (searchedData) {
         usedURL = sdURL;
