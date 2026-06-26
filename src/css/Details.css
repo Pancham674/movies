@@ -87,7 +87,7 @@ fieldset > img {
 
 .other-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 230px));
+    grid-template-columns: 1fr 1fr;
 }
 
 .other-info > div {

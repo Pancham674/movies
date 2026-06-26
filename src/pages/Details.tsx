@@ -74,6 +74,7 @@ export default function Details() {
                             <br />
                             <div className="other-info">
                                 <div>
+                                    { (movie!.original_title && movie!.original_title !== movie!.title) && <p>Original Title: {movie!.original_title}</p> }
                                     { movie!.status && <p>Status: {movie!.status}</p> }
                                     { movie!.release_date && <p>Release Date: {getReleaseDate(movie!.release_date)}</p>}
                                     { movie!.runtime !== 0 && <p>Runtime: {`${Math.floor(movie!.runtime / 60)}H ${Number(movie!.runtime) % 60}`}M</p>}

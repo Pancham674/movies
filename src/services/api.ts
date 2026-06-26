@@ -27,16 +27,22 @@ export const getPopularMovies = async () =>  {
             url: URL
         }
     }
-
+    
     return fullData;
 }
 
 export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem[]) => {
-    let sdURL = "";              //url for seachedData
-    let searchedData: JsonResponse | undefined = undefined;
+    const sdURL = `${BASE_URL}/search/movie?${API_KEY}&query=${encodeURIComponent(searchTerm)}`;
+    let searchedData: JsonResponse;
     
-    let fdURL = "";              //url for filteredData
-    let filteredData: JsonResponse | undefined = undefined;
+    let selectedGenres = genreList.filter(g => g.isActive);
+    const fdURL = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${selectedGenres.map(g => g.id)}`;
+    let filteredData: JsonResponse = {
+        results: [] as any[],
+        page: 0,
+        total_pages: 0,
+        status_message: ""  
+    };
     
     let usedURL = "";
     let matchedData: JsonResponse = {
@@ -45,68 +51,62 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
         total_pages: 0,
         status_message: ""  
     };
-    matchedPages = [[]];
-
-    if (searchTerm){
-        sdURL = `${BASE_URL}/search/movie?${API_KEY}&query=${encodeURIComponent(searchTerm)}`;
+    wasLastCallFilteredSearch = false;
+    
+    if (searchTerm && selectedGenres.length > 0){           //user wants to search and filter
+        usedURL = "";
+        matchedPages = [[]];
+        matchedData.page = 1;
+        wasLastCallFilteredSearch = true;
+        
+        let pages = 0;               //page index
+        let matches = 0;             //captures the amount of matched results to create pages
+        let movieCount = 0;
+        filteredData.results = await getMoreResults(fdURL);
+        
+        //iterate through both data to get movies that are contained in both
+        filteredData.results.forEach((filterPage: any[]) => {
+            filterPage.forEach((filterMov: MovieInfo) => {
+                //movies should have ALL selectedGenres
+                //prevent movie from appearing multiple times
+                movieCount++;
+                if (filterMov.title.toLocaleLowerCase().includes(searchTerm)) {
+                    if (matches > 0 && matches % 20 == 0){
+                        pages++;
+                        matchedPages.push([]);
+                    }
+                    matches++;
+                    matchedPages[pages].push(filterMov);
+                }
+            });
+        });
+        
+        matchedData.total_pages = matchedPages.length
+        matchedData.results = matchedPages.length == 0 ? [] : matchedPages[0];
+        
+    } else if (searchTerm) {                            //user wants to only search
         const response = await fetch(sdURL);
         searchedData = await response.json();
-
+        
         if (!response.ok) {
             const message = `Error Code ${response.status}: ${searchedData!.status_message}`;
             throw new Error(message);
         }
+        usedURL = sdURL;
+        matchedData = searchedData!;
     }
-
-    let selectedGenres = genreList.filter(g => g.isActive);
-    if (selectedGenres.length > 0){
-        fdURL = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${selectedGenres.map(g => g.id)}`;
+    else if (selectedGenres.length > 0){                //user wants to only filter
         const response = await fetch(fdURL);
         filteredData = await response.json();
-
+        
         if (!response.ok) {
             const message = `Error Code ${response.status}: ${filteredData!.status_message}`;
             throw new Error(message);
         }
-    }
-
-    wasLastCallFilteredSearch = false;
-    if (searchedData && filteredData) {
-        usedURL = "";
-        matchedData.page = 1;
-        wasLastCallFilteredSearch = true;
-
-        searchedData.results = await getMoreResults(sdURL, searchedData.total_pages);
-        filteredData.results = await getMoreResults(fdURL, filteredData.total_pages);
-        
-        let matches = 0;             //captures the amount of matched results to create pages
-        
-        //iterate through both data to get movies that are contained in both
-        searchedData.results.forEach((searchPage: any[]) => {
-            searchPage.forEach((searchMov: any) => {
-                filteredData.results.forEach((filterPage: any[]) => {
-                    if (filterPage.find(filterMov => filterMov.id == searchMov.id)) {
-                        if (matches > 0 && matches % 20 == 0){
-                            matchedPages.push([]);
-                        }
-                        matchedPages[matches].push(searchMov);
-                    }
-                });
-            });
-        });
-
-        matchedData.total_pages = matchedPages.length
-        matchedData.results = matchedPages.length == 0 ? [] : matchedPages[0];
-    }
-    else if (searchedData) {
-        usedURL = sdURL;
-        matchedData = searchedData;
-    } 
-    else if (filteredData) {
         usedURL = fdURL;
-        matchedData = filteredData;
+        matchedData = filteredData!;
     }
-
+    
     const fullData: FullData = {
         results: matchedData.results,
         pageInfo: {
@@ -119,11 +119,11 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
     return fullData;
 }
 
-async function getMoreResults(url: string, maxPage: number) {
+async function getMoreResults(url: string) {
     let results = [];
-    const pageLimit = maxPage > 6 ? 6 : maxPage;
+    let pageLimit = 20;
 
-    for (let i = 1; i < pageLimit; i++) {
+    for (let i = 1; i < pageLimit +1; i++) {
         const response = await fetch(`${url}&page=${i}`);
         const data = await response.json();
         
@@ -132,6 +132,8 @@ async function getMoreResults(url: string, maxPage: number) {
             throw new Error(message);
         }
 
+        //if the result conains less than 20 (max movie per pages) then cancel the loop early
+        pageLimit = data.results.length < 20 ? i : pageLimit;
         results.push(data.results);
     }
 
@@ -187,7 +189,6 @@ export const getMoviesWithGenre = async (genreId: number) => {
     
     return fullData;
 }
-
 
 export async function changePage(pageInfo: PageInfo) {
     let fullData: FullData;

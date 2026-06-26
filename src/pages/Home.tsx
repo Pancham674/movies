@@ -15,7 +15,6 @@ export default function Home() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
-    // const [gsearchedGenres]
     const genreId = Number(useParams().genreId)
     
     useEffect(() => {
@@ -71,7 +70,7 @@ export default function Home() {
     );
     
     const handlePageChange = async (toPageNum: number) => {
-        if (toPageNum <= 0 || toPageNum > pageInfo!.totalPages) {
+        if (toPageNum <= 0 || toPageNum > pageInfo!.totalPages || pageInfo!.current == toPageNum) {
             return;
         }
 
