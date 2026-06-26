@@ -4,7 +4,7 @@
 
 .search-form {
   box-sizing: border-box;
-  margin: 0 auto 1rem;
+  margin: 0 auto 0.5rem;
   max-width: 600px;
   display: flex;
   width: 100%;
