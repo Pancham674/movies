@@ -4,22 +4,22 @@ import GenreFilter from "./GenreFilter";
 import "../css/GenreFilter.css"
 import "../css/Search.css"
 
-export default function Search({searchMoviesFunc, setSearchTermFunc, currentSearchTerm, genres}: {searchMoviesFunc: (e: any, g: GenreItem[]) => void, setSearchTermFunc: any, currentSearchTerm: string, genres: Genre[]}) {
+export default function Search({searchMoviesFunc, setSearchTermFunc, currentSearchTerm, genres, selectedGenreId}: {searchMoviesFunc: (e: any, g: GenreItem[]) => void, setSearchTermFunc: any, currentSearchTerm: string, genres: Genre[], selectedGenreId: number}) {
     const [genreList, setGenreList] = useState<GenreItem[]>([])
-    const [isFiltersVisible, setIsFiltersVisible] = useState(false);
-    const [btnText, setBtnText] = useState("show filters")
+    const [isFiltersVisible, setIsFiltersVisible] = useState(!Number.isNaN(selectedGenreId));
+    const [btnText, setBtnText] = useState(`${isFiltersVisible ? "hide" : "show"} filters`)
 
     function toggleFilters() {
         const isVisible = !isFiltersVisible;
         setIsFiltersVisible(isVisible);
-        setBtnText(isVisible ? "hide filters" : "show filters");
+        setBtnText(`${isVisible ? "hide" : "show"} filters`);
     }
 
     useEffect(() => { 
         const init: GenreItem[] = genres.map(g => ({
             id: g.id,
             name: g.name,
-            isActive: false
+            isActive: g.id == selectedGenreId
         }));
         setGenreList(init);
     }, [genres])
@@ -51,7 +51,7 @@ export default function Search({searchMoviesFunc, setSearchTermFunc, currentSear
             </form>
             <div id="filters" className={`${!isFiltersVisible ? "hidden" : ""}`}>
                 { genreList.map(g => 
-                    <GenreFilter key={g.id} genre={g} handleGenreClicked={handleGenreClicked} isActive={g.isActive} />
+                    <GenreFilter key={g.id} genre={g} handleGenreClicked={handleGenreClicked} isActive={(g.isActive)} />
                 )}</div>
             <button className="toggleFilter" onClick={toggleFilters}>{btnText}</button>
         </>

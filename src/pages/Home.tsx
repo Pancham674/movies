@@ -108,8 +108,9 @@ export default function Home() {
     return (<>
         <div className="filter-container">
             <Search searchMoviesFunc={searchMovies}
-                currentSearchTerm={searchTerm}
                 setSearchTermFunc={setSearchTerm}
+                currentSearchTerm={searchTerm}
+                selectedGenreId={genreId}
                 genres={genres}
             />  
         </div>
@@ -122,7 +123,6 @@ export default function Home() {
                     movies.length == 0 ?
                         <p className="no-movies">No movies could be found.</p> :
                         <>
-                            { !Number.isNaN(genreId) ? <p className="movie-genres">Movies with the genre <b>{ getFilteredGenres(genreId, genres) }</b>:</p> : ""}
                             <div className="movies-grid">{
                                 movies.map(mov => <MovieCard key={mov.id} currentMovie={mov} />)}
                             </div>
@@ -131,15 +131,4 @@ export default function Home() {
         } 
         </>
     );
-}
-
-function getFilteredGenres(genreId: number, genres: Genre[]) {
-    let filteresGenStr = "";
-    const filteredGenArr = genres.filter(g => g.id === genreId);
-
-    filteredGenArr.forEach(g => {
-        filteresGenStr += `${g.name}, `;
-    })
-
-    return filteresGenStr.substring(0, filteresGenStr.length - 2);
 }
