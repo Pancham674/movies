@@ -54,9 +54,8 @@ fieldset > img {
     background-color: whitesmoke;
     border-radius: 8px;
     max-width: 100px;
-    min-width: 30px;
+    max-height: 50px;
     padding: 0.5em;
-    width: 40%;
 }
 
 .poster {

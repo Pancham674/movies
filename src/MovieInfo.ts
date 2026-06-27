@@ -19,7 +19,7 @@ export interface MovieInfo {
   production_companies: ProductionCompanies[],
 }
 
-interface ProductionCountries {
+export interface ProductionCountries {
   iso_3166_1: string,
   name: string
 }

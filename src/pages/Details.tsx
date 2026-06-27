@@ -1,4 +1,4 @@
-import type { MovieInfo, SpokenLanguages } from "../MovieInfo";
+import type { MovieInfo, SpokenLanguages, ProductionCountries } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";  
 import { Link, useParams } from "react-router-dom";
 import { getMovieDetails } from "../services/api";
@@ -76,6 +76,8 @@ export default function Details() {
                             <button className={`favorite-btn ${isCurrentFavorite ? "active" : ""}`} onClick={favoriteMovie}>♥</button>
 
                             <br />
+                            { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
+                            
                             <div className="other-info">
                                 <div>
                                     { (movie!.original_title && movie!.original_title !== movie!.title) && <p>Original Title: {movie!.original_title}</p> }
@@ -90,8 +92,6 @@ export default function Details() {
                                 </div>
                             </div>
 
-                            { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
-                            
                             {
                                 movie!.genres.length > 0 &&
                                 <fieldset>
@@ -123,8 +123,7 @@ export default function Details() {
                                 movie!.production_countries.length > 0 && 
                                 <fieldset>
                                     <legend>Production Countries:</legend>
-                                    { movie!.production_countries.map(
-                                        (coun, i) => <p className="tag" key={i}>{coun.name}, </p>) }
+                                    <p>{getElementsAsString(movie!.production_countries)}</p>
                                 </fieldset>
                             }
 
@@ -132,7 +131,7 @@ export default function Details() {
                                 movie!.spoken_languages.length > 0 && 
                                 <fieldset>
                                     <legend>Available Languages:</legend>
-                                        <p>{ getLanguages(movie!.spoken_languages) }</p>
+                                        <p>{ getElementsAsString(movie!.spoken_languages) }</p>
                                 </fieldset>
                             }
                         </div>
@@ -158,12 +157,10 @@ function getReleaseDate(stringDate: string): string {
     return correctOrder;
 }
 
-function getLanguages(languagesArray: SpokenLanguages[]): string {
-    let langs = "";
-
-    languagesArray.forEach(lang => {
-        langs += `${lang.english_name}, `
-    });
-
-    return langs.substring(0, langs.length - 2);
+function getElementsAsString(array: SpokenLanguages[] | ProductionCountries[]): string {
+    return array.map(el => 
+                        "english_name" in el ?
+                            el.english_name :
+                            el.name)
+                        .join(", ");
 }
