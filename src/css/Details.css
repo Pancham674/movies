@@ -23,7 +23,8 @@
 }
 
 .general-info > fieldset {
-    grid-template-columns: repeat(auto-fit, minmax(30px, 100px));
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    border-radius: 8px;
     margin-top: 10px;
     overflow: auto;
     display: grid;
@@ -50,10 +51,16 @@ legend, .movie-subtitle {
 } 
 
 fieldset > img {
-    width: 80%;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    max-width: 100px;
+    min-width: 30px;
+    padding: 0.5em;
+    width: 40%;
 }
 
 .poster {
+    border: 1px solid #1a1a1a;
     grid-area: poster;
     width: 100%;
     height: 100%;
@@ -103,15 +110,23 @@ fieldset > img {
 }
 
 .tag.clickable {
-    color: white;
     background-color: #f40612;
+    border: 1px solid #f40612;
+    justify-content: center;
+    display: inline-flex;
     padding: 0.1em 0.6em;
-    font-size: 0.8rem;
+    align-items: center;
     border-radius: 8px;
     text-align: center;
-    border: 1px solid #f40612;
+    font-size: 0.8rem;
+    color: white;
 }
 
 .tag.clickable:hover {
     border-color: #646cff;
+}
+
+.production-companies {
+    justify-items: center;
+    align-items: center;
 }

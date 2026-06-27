@@ -5,10 +5,6 @@ const BASE_URL = "https://api.themoviedb.org/3";
 let wasLastCallFilteredSearch = false;
 let matchedPages: any[];
 
-//when when adding genre to filter in the search make it possible to search for multiple
-// add a filter(confirm) and reset button. Perhabs a dropdown to filter too
-//i have to make it so instead of one, you can search for multiple (its currently only one)
-
 export const getPopularMovies = async () =>  {
     const URL = `${BASE_URL}/movie/popular?${API_KEY}`;
     const response = await fetch(URL);

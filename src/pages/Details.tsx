@@ -109,7 +109,7 @@ export default function Details() {
 
                             {
                                 movie!.production_companies.length > 0 && 
-                                <fieldset>
+                                <fieldset className="production-companies">
                                     <legend>Production Companies:</legend>
                                     { movie!.production_companies.map(
                                         comp => comp.logo_path ?
