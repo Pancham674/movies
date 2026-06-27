@@ -105,14 +105,13 @@ fieldset > img {
 .tag.clickable {
     color: white;
     background-color: #f40612;
-    padding: 0.3em 0.6em;
+    padding: 0.1em 0.6em;
     font-size: 0.8rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #f40612;
 }
 
-.tag.clickable > a {
-    color: inherit
-}
-
-.tag.clickable > a:hover {
-    color: inherit
+.tag.clickable:hover {
+    border-color: #646cff;
 }

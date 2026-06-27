@@ -97,10 +97,13 @@ export default function Details() {
                                 <fieldset>
                                     <legend>Genres</legend>
                                         { movie!.genres.map(
-                                            (gen, i) => 
-                                                <button key={i} className="tag clickable" onClick={() => genreClicked(gen.id)}>
-                                                    <Link key={gen.id} to={`/`} >{gen.name}</Link>
-                                                </button>) }
+                                            gen => 
+                                                <Link key={gen.id} 
+                                                    className="tag clickable"
+                                                    onClick={() => genreClicked(gen.id)}
+                                                    to={`/`} >{gen.name}
+                                                </Link>
+                                            )}
                                 </fieldset>
                             }
 
