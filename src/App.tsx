@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
 import "./css/App.css";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -18,5 +19,6 @@ export default function App() {
         <Route path="/favorites" element={<Favorites />}/>
       </Routes>
     </main>
+    <Footer />
   </MovieProvider>);
 }
