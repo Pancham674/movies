@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import "../css/Details.css";
 
 export default function Details() {
-    const { isFavorite, addToFavs, removeFromFavs } = useMovieContext();
+    const { isFavorite, addToFavs, removeFromFavs, setSelectedGenreId } = useMovieContext();
     const [isAnyInfoAvailable , setisAnyInfoAvailable] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -26,6 +26,10 @@ export default function Details() {
     const favoriteMovie = (e: any) => {
         e.preventDefault();
         isCurrentFavorite ? removeFromFavs(movId) : movie ? addToFavs(movie) : null;
+    }
+
+    function genreClicked(genreId: number) {
+        setSelectedGenreId(genreId);
     }
 
     //Refetch the info everytime movId changes (basically everytime Details gets viewed)
@@ -94,8 +98,8 @@ export default function Details() {
                                     <legend>Genres</legend>
                                         { movie!.genres.map(
                                             (gen, i) => 
-                                                <button key={i} className="tag clickable">
-                                                    <Link key={gen.id} to={`/genres/${gen.id}`} >{gen.name}</Link>
+                                                <button key={i} className="tag clickable" onClick={() => genreClicked(gen.id)}>
+                                                    <Link key={gen.id} to={`/`} >{gen.name}</Link>
                                                 </button>) }
                                 </fieldset>
                             }

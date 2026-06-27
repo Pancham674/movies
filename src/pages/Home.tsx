@@ -3,19 +3,17 @@ import type { Genre, GenreItem, MovieInfo, PageInfo } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";
 import PageButtons from "../components/PageButtons";
 import MovieCard from "../components/MovieCard";
-import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Search from "../components/Search";
 import "../css/Home.css";
 
 export default function Home() {
-    const { isLoading, setIsLoading } = useMovieContext();
+    const { isLoading, setIsLoading, selectedGenreId } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [pageInfo, setPageInfo] = useState<PageInfo>();
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [error, setError] = useState("");
-    const genreId = Number(useParams().genreId)
     
     useEffect(() => {
             const loadAllGenres = async () => {
@@ -60,13 +58,13 @@ export default function Home() {
                 }
             }
              
-            if (genreId) {
-                loadMoviesWithGenre(genreId);
+            if (selectedGenreId > 0) {
+                loadMoviesWithGenre(selectedGenreId);
             } else {
                 loadPopularMovies();
             }
             
-        }, [genreId]
+        }, [selectedGenreId]
     );
     
     const handlePageChange = async (toPageNum: number) => {
@@ -110,7 +108,6 @@ export default function Home() {
             <Search searchMoviesFunc={searchMovies}
                 setSearchTermFunc={setSearchTerm}
                 currentSearchTerm={searchTerm}
-                selectedGenreId={genreId}
                 genres={genres}
             />  
         </div>

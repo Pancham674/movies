@@ -7,7 +7,9 @@ interface MovieContextType {
     removeFromFavs: (movId: number) => void,
     isFavorite: (movId: number) => boolean,
     isLoading: boolean,
-    setIsLoading: React.Dispatch<SetStateAction<boolean>>
+    setIsLoading: React.Dispatch<SetStateAction<boolean>>,
+    selectedGenreId: number,
+    setSelectedGenreId: React.Dispatch<SetStateAction<number>>,
 }
 
 const MovieContext = createContext<MovieContextType>(null!);
@@ -16,6 +18,7 @@ export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
+    const [selectedGenreId, setSelectedGenreId] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isInit, setIsInit] = useState(true);
 
@@ -52,6 +55,7 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
     const values: MovieContextType = {
         favMovies, addToFavs, removeFromFavs, isFavorite, 
         isLoading, setIsLoading,
+        selectedGenreId, setSelectedGenreId,
     }
 
     return (
