@@ -1,4 +1,4 @@
-As my first react project I followed a [tutorial by Tech With Tim](https://www.youtube.com/watch?v=G6D9cBaLViA), which I then expanded with my knowledge.
+As my first react project I followed a [tutorial by Tech With Tim](https://www.youtube.com/watch?v=G6D9cBaLViA), which I then expanded with my knowledge. API used is the TMDB API.
 
 ## Original Project
 - API calls to get popular movies and movies by their title
