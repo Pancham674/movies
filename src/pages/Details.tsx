@@ -71,12 +71,11 @@ export default function Details() {
                         </img>
 
                         <div className="general-info">
-                            <legend className="movie-title"><b>{movie!.title}</b></legend>
-                            { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
+                            <div>
+                                <h4 className="movie-title"><b>{movie!.title}</b></h4>
+                                { movie!.tagline && <h4 className="movie-subtitle"><i>"{movie!.tagline}"</i></h4> }
+                            </div>
                             <button className={`favorite-btn ${isCurrentFavorite ? "active" : ""}`} onClick={favoriteMovie}>♥</button>
-
-                            <br />
-                            { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
                             
                             <div className="other-info">
                                 <div>
@@ -89,6 +88,7 @@ export default function Details() {
                                     { movie!.budget !== 0 && <p>Budget: { movie!.budget.toLocaleString("en-US") }$</p> }
                                     { movie!.revenue !== 0 && <p>Revenue: { movie!.revenue.toLocaleString("en-US") }$</p> }
                                     { (movie!.budget !== 0 && movie!.revenue !== 0) && <p>Profit: { (movie!.revenue - movie!.budget).toLocaleString("en-US") }$</p> }
+                                    { movie!.homepage && <a href={movie!.homepage} target="_blank">Homepage Link...</a> }
                                 </div>
                             </div>
 
