@@ -25,10 +25,17 @@
 .general-info > fieldset {
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     border-radius: 8px;
+    min-height: 3em;
     overflow: auto;
     display: grid;
     padding: 5px;
     gap: 0.2em;
+}
+
+@media (max-width: 870px) {
+    .general-info > fieldset {
+        min-height: 5em;
+    }
 }
 
 .general-info, .desc {
