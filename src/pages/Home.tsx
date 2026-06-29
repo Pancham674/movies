@@ -8,11 +8,12 @@ import Search from "../components/Search";
 import "../css/Home.css";
 
 export default function Home() {
-    const { isLoading, setIsLoading, selectedGenreId } = useMovieContext();
     const [movies, setMovies] = useState<MovieInfo[]>([]);
     const [pageInfo, setPageInfo] = useState<PageInfo>();
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const { selectedGenreId } = useMovieContext();
     const [error, setError] = useState("");
     
     useEffect(() => {
@@ -94,7 +95,6 @@ export default function Home() {
             setError("");
             setMovies(fullData.results);
             setPageInfo(fullData.pageInfo);
-            // setGenres(genreList.filter(g => g.isActive).map(g => g.id));
         } catch(error: any) {
             console.log(error);
             setError(error.message);
@@ -114,9 +114,9 @@ export default function Home() {
 
         { 
             error ? 
-                <div className="error-message">{error}</div> :
+                <p className="no-movies error-message">{error}</p> :
                 isLoading ?
-                    <h3 className="loading">Hang on, we're still loading!</h3> :
+                    <p className="no-movies">Hang on, we're still loading!</p> :
                     movies.length == 0 ?
                         <p className="no-movies">No movies could be found.</p> :
                         <>

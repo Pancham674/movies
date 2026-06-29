@@ -14,9 +14,14 @@
   gap: 1.5rem;
 }
 
-.movie-genres {
+.no-movies {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: lighter;
+}
+
+.error-message {
+  font-weight: bold;
 }
 
 .filter-container {

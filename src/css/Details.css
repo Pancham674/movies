@@ -1,6 +1,6 @@
 .details {
     display: grid;
-    grid-template-columns: 1.25fr 2fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1em;
     margin: 2em 5em;
     grid-template-areas:
@@ -130,4 +130,10 @@ fieldset > img {
 .production-companies {
     justify-items: center;
     align-items: center;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: lighter;
 }

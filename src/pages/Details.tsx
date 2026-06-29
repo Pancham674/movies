@@ -61,7 +61,7 @@ export default function Details() {
             error ?
             <div className="error-message">{error}</div> :
             isLoading ? 
-            <p>Loading!!</p> :
+            <p className="loading">Loading the movie details!</p> :
                 <div className="Details">
                     <div className="bg" style={{ backgroundImage: `url(${divBg})` }} />
                     <div className="details">
