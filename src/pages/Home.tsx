@@ -13,7 +13,7 @@ export default function Home() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    const { selectedGenreId } = useMovieContext();
+    const { selectedGenres } = useMovieContext();
     const [error, setError] = useState("");
     
     useEffect(() => {
@@ -45,9 +45,9 @@ export default function Home() {
                 }
             }
 
-            async function loadMoviesWithGenre(genreId: number){
+            async function loadMoviesWithGenre(genres: GenreItem[]){
                 try {
-                    const fullData = await getMoviesWithGenre(genreId);
+                    const fullData = await getMoviesWithGenre(genres);
                     
                     setMovies(fullData.results);
                     setPageInfo(fullData.pageInfo);
@@ -59,13 +59,13 @@ export default function Home() {
                 }
             }
              
-            if (selectedGenreId > 0) {
-                loadMoviesWithGenre(selectedGenreId);
+            if (selectedGenres.length > 0) {
+                loadMoviesWithGenre(selectedGenres);
             } else {
                 loadPopularMovies();
             }
             
-        }, [selectedGenreId]
+        }, [selectedGenres]
     );
     
     const handlePageChange = async (toPageNum: number) => {

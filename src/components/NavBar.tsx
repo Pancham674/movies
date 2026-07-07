@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import "../css/Navbar.css";
 
 export default function NavBar() {
-    const { setSelectedGenreId } = useMovieContext();
+    const { setSelectedGenres } = useMovieContext();
     function goToPopularMovies() {
-        setSelectedGenreId(0);
+        setSelectedGenres([]);
     }
 
     return (

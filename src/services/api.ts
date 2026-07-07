@@ -163,8 +163,9 @@ export const getAllGenres = async () => {
     return data.genres;
 }
 
-export const getMoviesWithGenre = async (genreId: number) => {
-    const URL = `${BASE_URL}/discover/movie?with_genres=${genreId}&${API_KEY}`;
+export const getMoviesWithGenre = async (genreList: GenreItem[]) => {
+    const selectedGenres = genreList.filter(g => g.isActive);
+    const URL = `${BASE_URL}/discover/movie?${API_KEY}&with_genres=${selectedGenres.map(g => g.id)}`;
     const response = await fetch(URL);
     const data = await response.json();
     

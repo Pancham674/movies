@@ -6,10 +6,10 @@ import "../css/GenreFilter.css"
 import "../css/Search.css"
 
 export default function Search({searchMoviesFunc, setSearchTermFunc, currentSearchTerm, genres}: {searchMoviesFunc: (e: any, g: GenreItem[]) => void, setSearchTermFunc: any, currentSearchTerm: string, genres: Genre[]}) {
-    const { selectedGenreId } = useMovieContext();
+    const {selectedGenres} = useMovieContext();
     const [genreList, setGenreList] = useState<GenreItem[]>([])
     //this still gets set to true even though selectedGenreId is 0: click genre in Details and go to Popular Movies afterwards.
-    const [isFiltersVisible, setIsFiltersVisible] = useState(selectedGenreId != 0);
+    const [isFiltersVisible, setIsFiltersVisible] = useState(selectedGenres.length != 0);
     const [btnText, setBtnText] = useState(`${isFiltersVisible ? "hide" : "show"} filters`)
 
     function toggleFilters() {
@@ -22,7 +22,7 @@ export default function Search({searchMoviesFunc, setSearchTermFunc, currentSear
         const init: GenreItem[] = genres.map(g => ({
             id: g.id,
             name: g.name,
-            isActive: g.id == selectedGenreId
+            isActive: selectedGenres.find(sG => sG.id == g.id)?.isActive ?? false
         }));
         setGenreList(init);
     }, [genres])

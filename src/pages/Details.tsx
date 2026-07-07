@@ -1,4 +1,4 @@
-import type { MovieInfo, SpokenLanguages, ProductionCountries } from "../MovieInfo";
+import type { MovieInfo, SpokenLanguages, ProductionCountries, Genre } from "../MovieInfo";
 import { useMovieContext } from "../context/MovieContext";  
 import { Link, useParams } from "react-router-dom";
 import { getMovieDetails } from "../services/api";
@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import "../css/Details.css";
 
 export default function Details() {
-    const { isFavorite, addToFavs, removeFromFavs, setSelectedGenreId } = useMovieContext();
+    const { isFavorite, addToFavs, removeFromFavs, setSelectedGenres } = useMovieContext();
     const [isAnyInfoAvailable , setisAnyInfoAvailable] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -28,8 +28,12 @@ export default function Details() {
         isCurrentFavorite ? removeFromFavs(movId) : movie ? addToFavs(movie) : null;
     }
 
-    function genreClicked(genreId: number) {
-        setSelectedGenreId(genreId);
+    function genreClicked(genre: Genre) {
+        setSelectedGenres([{
+                 id: genre.id,
+                 name: genre.name,
+                 isActive: true
+        }]);
     }
 
     //Refetch the info everytime movId changes (basically everytime Details gets viewed)
@@ -100,7 +104,7 @@ export default function Details() {
                                             gen => 
                                                 <Link key={gen.id} 
                                                     className="tag clickable"
-                                                    onClick={() => genreClicked(gen.id)}
+                                                    onClick={() => genreClicked(gen)}
                                                     to={`/`} >{gen.name}
                                                 </Link>
                                             )}

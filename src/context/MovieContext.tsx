@@ -1,13 +1,13 @@
 import { createContext, useState, useContext, useEffect, type SetStateAction } from "react";
-import type { MovieInfo } from "../MovieInfo";
+import type { GenreItem, MovieInfo } from "../MovieInfo";
 
 interface MovieContextType {
     favMovies: MovieInfo[],
     addToFavs: (movie: MovieInfo) => void,
     removeFromFavs: (movId: number) => void,
     isFavorite: (movId: number) => boolean,
-    selectedGenreId: number,
-    setSelectedGenreId: React.Dispatch<SetStateAction<number>>,
+    selectedGenres: GenreItem[],
+    setSelectedGenres: React.Dispatch<SetStateAction<GenreItem[]>>,
 }
 
 const MovieContext = createContext<MovieContextType>(null!);
@@ -15,8 +15,8 @@ const MovieContext = createContext<MovieContextType>(null!);
 export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({children}: {children: React.ReactNode}) => {
+    const [selectedGenres, setSelectedGenres] = useState<GenreItem[]>([]);
     const [favMovies, setFavMovies] = useState<MovieInfo[]>([]);
-    const [selectedGenreId, setSelectedGenreId] = useState(0);
     const [isInit, setIsInit] = useState(true);
 
     //retrieve the favMovies from localStorage on the first load
@@ -51,7 +51,7 @@ export const MovieProvider = ({children}: {children: React.ReactNode}) => {
 
     const values: MovieContextType = {
         favMovies, addToFavs, removeFromFavs, isFavorite, 
-        selectedGenreId, setSelectedGenreId,
+        selectedGenres, setSelectedGenres
     }
 
     return (
