@@ -1,6 +1,7 @@
 import type { Movie, PageInfo, GenreItem } from "../Interfaces";
 
-const API_KEY = `api_key=${import.meta.env.VITE_API_KEY}`;                       //generate your free API key by creating a free account https://www.themoviedb.org/settings/api
+//generate your free API key by creating a free account: https://www.themoviedb.org/settings/api
+const API_KEY = `api_key=${import.meta.env.VITE_API_KEY}`;
 const BASE_URL = "https://api.themoviedb.org/3";
 let wasLastCallFilteredSearch = false;
 let matchedPages: any[];

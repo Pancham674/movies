@@ -13,7 +13,7 @@ export default function Home() {
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    const { selectedGenres } = useMovieContext();
+    const { selectedGenres, setSelectedGenres } = useMovieContext();
     const [error, setError] = useState("");
     
     useEffect(() => {
@@ -95,6 +95,7 @@ export default function Home() {
             setError("");
             setMovies(fullData.results);
             setPageInfo(fullData.pageInfo);
+            setSelectedGenres(genreList.filter(gI => gI.isActive));
         } catch(error: any) {
             console.log(error);
             setError(error.message);
