@@ -1,4 +1,4 @@
-import type { MovieInfo, SpokenLanguages, ProductionCountries, Genre } from "../MovieInfo";
+import type { Movie, SpokenLanguages, ProductionCountries, Genre } from "../Interfaces";
 import { useMovieContext } from "../context/MovieContext";  
 import { Link, useParams } from "react-router-dom";
 import { getMovieDetails } from "../services/api";
@@ -10,7 +10,7 @@ export default function Details() {
     const [isAnyInfoAvailable , setisAnyInfoAvailable] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [movie, setMovie] = useState<MovieInfo>();
+    const [movie, setMovie] = useState<Movie>();
     const [divBg, setDivBg] = useState("");
     const [error, setError] = useState("");
 
@@ -40,7 +40,7 @@ export default function Details() {
     useEffect(() => {
         async function loadMovieDetails() {
             try {
-                const mov: MovieInfo = await getMovieDetails(movId);
+                const mov: Movie = await getMovieDetails(movId);
                 setMovie(mov);
 
                 const bgImgDiv = mov!.backdrop_path ? imgPath + og + mov!.backdrop_path : "";

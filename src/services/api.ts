@@ -1,4 +1,4 @@
-import type { MovieInfo, PageInfo, GenreItem } from "../MovieInfo";
+import type { Movie, PageInfo, GenreItem } from "../Interfaces";
 
 const API_KEY = `api_key=${import.meta.env.VITE_API_KEY}`;                       //generate your free API key by creating a free account https://www.themoviedb.org/settings/api
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -62,7 +62,7 @@ export const getSearchedMovies = async (searchTerm: string, genreList: GenreItem
         
         //iterate through both data to get movies that are contained in both
         filteredData.results.forEach((filterPage: any[]) => {
-            filterPage.forEach((filterMov: MovieInfo) => {
+            filterPage.forEach((filterMov: Movie) => {
                 //movies should have ALL selectedGenres
                 //prevent movie from appearing multiple times
                 movieCount++;
@@ -222,7 +222,7 @@ export async function changePage(pageInfo: PageInfo) {
 }
 
 interface FullData {
-    results: MovieInfo[],
+    results: Movie[],
     pageInfo: PageInfo
 }
 

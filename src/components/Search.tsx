@@ -1,5 +1,5 @@
 import { useMovieContext } from "../context/MovieContext";
-import type { Genre, GenreItem } from "../MovieInfo";
+import type { Genre, GenreItem } from "../Interfaces";
 import { useState, useEffect } from "react";
 import GenreFilter from "./GenreFilter";
 import "../css/GenreFilter.css"
@@ -8,7 +8,7 @@ import "../css/Search.css"
 export default function Search({searchMoviesFunc, setSearchTermFunc, currentSearchTerm, genres}: {searchMoviesFunc: (e: any, g: GenreItem[]) => void, setSearchTermFunc: any, currentSearchTerm: string, genres: Genre[]}) {
     const {selectedGenres} = useMovieContext();
     const [genreList, setGenreList] = useState<GenreItem[]>([])
-    //this still gets set to true even though selectedGenreId is 0: click genre in Details and go to Popular Movies afterwards.
+    //this still gets set to true even though selectedGenres is empty: click genre in Details and go to Popular Movies afterwards.
     const [isFiltersVisible, setIsFiltersVisible] = useState(selectedGenres.length != 0);
     const [btnText, setBtnText] = useState(`${isFiltersVisible ? "hide" : "show"} filters`)
 

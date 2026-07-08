@@ -1,5 +1,5 @@
 import { getPopularMovies, getSearchedMovies, getMoviesWithGenre, changePage, getAllGenres } from "../services/api";
-import type { Genre, GenreItem, MovieInfo, PageInfo } from "../MovieInfo";
+import type { Genre, GenreItem, Movie, PageInfo } from "../Interfaces";
 import { useMovieContext } from "../context/MovieContext";
 import PageButtons from "../components/PageButtons";
 import MovieCard from "../components/MovieCard";
@@ -8,7 +8,7 @@ import Search from "../components/Search";
 import "../css/Home.css";
 
 export default function Home() {
-    const [movies, setMovies] = useState<MovieInfo[]>([]);
+    const [movies, setMovies] = useState<Movie[]>([]);
     const [pageInfo, setPageInfo] = useState<PageInfo>();
     const [genres, setGenres] = useState<Genre[]>([]);
     const [searchTerm, setSearchTerm] = useState("");

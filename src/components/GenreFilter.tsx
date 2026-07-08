@@ -1,4 +1,4 @@
-import type { Genre } from "../MovieInfo";
+import type { Genre } from "../Interfaces";
 
 export default function GenreFilter({genre, handleGenreClicked, isActive}: {genre: Genre, handleGenreClicked: (g: Genre) => void, isActive: boolean}) {
     return (<>

@@ -2,10 +2,10 @@ import { MovieProvider } from "./context/MovieContext";
 import { Routes, Route } from "react-router-dom";
 import Favorites from "./pages/Favorites";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
 import "./css/App.css";
-import Footer from "./components/Footer";
 
 export default function App() {
   return (
